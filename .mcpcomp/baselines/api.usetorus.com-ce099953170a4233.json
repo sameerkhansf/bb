@@ -1,0 +1,324 @@
+{
+  "schemaVersion": 1,
+  "target": "https://api.usetorus.com/mcp",
+  "scannedAt": "2026-08-12T19:18:21.015Z",
+  "grade": null,
+  "authorizationConfigured": true,
+  "findings": [
+    {
+      "id": "authorization.oauth-not-advertised",
+      "family": "discovery",
+      "normative": "SHOULD",
+      "severity": "medium",
+      "title": "The server requires credentials but advertises no MCP OAuth challenge",
+      "message": "The endpoint requires authorization but presented no MCP OAuth challenge: its response carried no WWW-Authenticate header. MCP authorization is OPTIONAL, so this is not a violation — the server may authenticate through a non-OAuth scheme such as an API key or a static bearer token, which the MCP authorization specification does not cover and which this scanner cannot audit for OAuth conformance. It does mean a client that only supports zero-configuration OAuth discovery cannot connect.",
+      "evidence": [
+        "https://api.usetorus.com/mcp"
+      ],
+      "specReferences": [
+        {
+          "id": "MCP-Authorization-metadata-discovery",
+          "url": "https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization#authorization-server-metadata-discovery"
+        }
+      ],
+      "probeTier": "passive",
+      "fix": "If the server uses MCP OAuth, return 401 with a WWW-Authenticate: Bearer challenge carrying a resource_metadata pointer. If it authenticates with an API key or static token, no change is needed — but zero-configuration OAuth clients will not be able to connect."
+    }
+  ],
+  "passedChecks": [],
+  "skippedChecks": [
+    "authorization-scheme-not-oauth"
+  ],
+  "capabilities": {
+    "authorizationServerMetadata": false,
+    "pkceS256": null,
+    "dynamicClientRegistration": null,
+    "clientIdMetadataDocuments": null,
+    "issuerResponseParameter": null
+  },
+  "probe": {
+    "serverUrl": "https://api.usetorus.com/mcp",
+    "fetchedAt": "2026-08-12T19:18:21.015Z",
+    "challenge": {
+      "status": 401,
+      "hasResourceMetadata": false
+    },
+    "prm": {
+      "retrieved": false,
+      "foundAtSubpath": false,
+      "foundAtRoot": false,
+      "authorizationServers": [],
+      "scopesSupported": [],
+      "error": "Error: HTTP 401 trying to load well-known OAuth protected resource metadata.",
+      "observations": [
+        {
+          "url": "https://api.usetorus.com/mcp",
+          "status": 401,
+          "headers": {
+            "content-length": "58",
+            "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' fonts.gstatic.com; connect-src 'self' wss: https:; frame-src 'self'; worker-src 'self' blob:; media-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests; report-uri /csp-report; report-to csp-endpoint",
+            "content-type": "application/json",
+            "cross-origin-opener-policy": "same-origin",
+            "cross-origin-resource-policy": "same-origin",
+            "date": "Wed, 12 Aug 2026 19:18:20 GMT",
+            "permissions-policy": "accelerometer=(), autoplay=(), camera=(), clipboard-read=(self), clipboard-write=(self), display-capture=(), encrypted-media=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), picture-in-picture=(), publickey-credentials-get=(self), screen-wake-lock=(), sync-xhr=(), usb=(), xr-spatial-tracking=()",
+            "referrer-policy": "strict-origin-when-cross-origin",
+            "report-to": "{\"group\":\"csp-endpoint\",\"max_age\":10886400,\"endpoints\":[{\"url\":\"/csp-report\"}]}",
+            "reporting-endpoints": "csp-endpoint=\"/csp-report\"",
+            "server": "railway-hikari",
+            "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+            "x-content-type-options": "nosniff",
+            "x-frame-options": "DENY",
+            "x-hikari-trace": "lax1.z1hw",
+            "x-permitted-cross-domain-policies": "none",
+            "x-railway-edge": "lax1",
+            "x-railway-request-id": "aVQrV5P4T5aRxSTS0_TJvA",
+            "x-request-id": "ff8741e9-c8ee-4ee0-906a-a2dc610423b8"
+          },
+          "body": {
+            "error": {
+              "code": "UNAUTHORIZED",
+              "message": "Unauthorized"
+            }
+          }
+        },
+        {
+          "url": "https://api.usetorus.com/.well-known/oauth-protected-resource/mcp",
+          "status": 401,
+          "headers": {
+            "content-length": "58",
+            "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' fonts.gstatic.com; connect-src 'self' wss: https:; frame-src 'self'; worker-src 'self' blob:; media-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests; report-uri /csp-report; report-to csp-endpoint",
+            "content-type": "application/json",
+            "cross-origin-opener-policy": "same-origin",
+            "cross-origin-resource-policy": "same-origin",
+            "date": "Wed, 12 Aug 2026 19:18:20 GMT",
+            "permissions-policy": "accelerometer=(), autoplay=(), camera=(), clipboard-read=(self), clipboard-write=(self), display-capture=(), encrypted-media=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), picture-in-picture=(), publickey-credentials-get=(self), screen-wake-lock=(), sync-xhr=(), usb=(), xr-spatial-tracking=()",
+            "referrer-policy": "strict-origin-when-cross-origin",
+            "report-to": "{\"group\":\"csp-endpoint\",\"max_age\":10886400,\"endpoints\":[{\"url\":\"/csp-report\"}]}",
+            "reporting-endpoints": "csp-endpoint=\"/csp-report\"",
+            "server": "railway-hikari",
+            "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+            "x-content-type-options": "nosniff",
+            "x-frame-options": "DENY",
+            "x-hikari-trace": "lax1.z1hw",
+            "x-permitted-cross-domain-policies": "none",
+            "x-railway-edge": "lax1",
+            "x-railway-request-id": "XX5gmP7WSmiiGc18lt7tkg",
+            "x-request-id": "fe1fa066-0f36-4b4d-9cc0-8ccc1865147b"
+          },
+          "body": {
+            "error": {
+              "code": "UNAUTHORIZED",
+              "message": "Unauthorized"
+            }
+          }
+        },
+        {
+          "url": "https://api.usetorus.com/.well-known/oauth-protected-resource",
+          "status": 401,
+          "headers": {
+            "content-length": "58",
+            "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' fonts.gstatic.com; connect-src 'self' wss: https:; frame-src 'self'; worker-src 'self' blob:; media-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests; report-uri /csp-report; report-to csp-endpoint",
+            "content-type": "application/json",
+            "cross-origin-opener-policy": "same-origin",
+            "cross-origin-resource-policy": "same-origin",
+            "date": "Wed, 12 Aug 2026 19:18:20 GMT",
+            "permissions-policy": "accelerometer=(), autoplay=(), camera=(), clipboard-read=(self), clipboard-write=(self), display-capture=(), encrypted-media=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), picture-in-picture=(), publickey-credentials-get=(self), screen-wake-lock=(), sync-xhr=(), usb=(), xr-spatial-tracking=()",
+            "referrer-policy": "strict-origin-when-cross-origin",
+            "report-to": "{\"group\":\"csp-endpoint\",\"max_age\":10886400,\"endpoints\":[{\"url\":\"/csp-report\"}]}",
+            "reporting-endpoints": "csp-endpoint=\"/csp-report\"",
+            "server": "railway-hikari",
+            "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+            "x-content-type-options": "nosniff",
+            "x-frame-options": "DENY",
+            "x-hikari-trace": "lax1.z1hw",
+            "x-permitted-cross-domain-policies": "none",
+            "x-railway-edge": "lax1",
+            "x-railway-request-id": "EtYhFF1TTFq-B9s6WUN5dQ",
+            "x-request-id": "a2db4ad9-740a-4fe1-9bf1-5a3226da8119"
+          },
+          "body": {
+            "error": {
+              "code": "UNAUTHORIZED",
+              "message": "Unauthorized"
+            }
+          }
+        }
+      ]
+    },
+    "asMetadata": {
+      "expectedIssuer": "https://api.usetorus.com/",
+      "retrieved": false,
+      "issuerMismatch": false,
+      "clientIdMetadataDocumentSupported": false,
+      "registeredRedirectUris": [],
+      "endpointLiveness": [],
+      "candidates": [
+        "https://api.usetorus.com/.well-known/oauth-authorization-server",
+        "https://api.usetorus.com/.well-known/openid-configuration"
+      ],
+      "observations": [
+        {
+          "url": "https://api.usetorus.com/.well-known/oauth-authorization-server",
+          "status": 401,
+          "headers": {
+            "content-length": "58",
+            "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' fonts.gstatic.com; connect-src 'self' wss: https:; frame-src 'self'; worker-src 'self' blob:; media-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests; report-uri /csp-report; report-to csp-endpoint",
+            "content-type": "application/json",
+            "cross-origin-opener-policy": "same-origin",
+            "cross-origin-resource-policy": "same-origin",
+            "date": "Wed, 12 Aug 2026 19:18:20 GMT",
+            "permissions-policy": "accelerometer=(), autoplay=(), camera=(), clipboard-read=(self), clipboard-write=(self), display-capture=(), encrypted-media=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), picture-in-picture=(), publickey-credentials-get=(self), screen-wake-lock=(), sync-xhr=(), usb=(), xr-spatial-tracking=()",
+            "referrer-policy": "strict-origin-when-cross-origin",
+            "report-to": "{\"group\":\"csp-endpoint\",\"max_age\":10886400,\"endpoints\":[{\"url\":\"/csp-report\"}]}",
+            "reporting-endpoints": "csp-endpoint=\"/csp-report\"",
+            "server": "railway-hikari",
+            "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+            "x-content-type-options": "nosniff",
+            "x-frame-options": "DENY",
+            "x-hikari-trace": "lax1.z1hw",
+            "x-permitted-cross-domain-policies": "none",
+            "x-railway-edge": "lax1",
+            "x-railway-request-id": "Go0qES3yR9adVfINnpoFkQ",
+            "x-request-id": "e83a0a52-0d12-4df0-9d3c-089e37ea0574"
+          },
+          "body": {
+            "error": {
+              "code": "UNAUTHORIZED",
+              "message": "Unauthorized"
+            }
+          }
+        },
+        {
+          "url": "https://api.usetorus.com/.well-known/openid-configuration",
+          "status": 401,
+          "headers": {
+            "content-length": "58",
+            "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' fonts.gstatic.com; connect-src 'self' wss: https:; frame-src 'self'; worker-src 'self' blob:; media-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests; report-uri /csp-report; report-to csp-endpoint",
+            "content-type": "application/json",
+            "cross-origin-opener-policy": "same-origin",
+            "cross-origin-resource-policy": "same-origin",
+            "date": "Wed, 12 Aug 2026 19:18:20 GMT",
+            "permissions-policy": "accelerometer=(), autoplay=(), camera=(), clipboard-read=(self), clipboard-write=(self), display-capture=(), encrypted-media=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), picture-in-picture=(), publickey-credentials-get=(self), screen-wake-lock=(), sync-xhr=(), usb=(), xr-spatial-tracking=()",
+            "referrer-policy": "strict-origin-when-cross-origin",
+            "report-to": "{\"group\":\"csp-endpoint\",\"max_age\":10886400,\"endpoints\":[{\"url\":\"/csp-report\"}]}",
+            "reporting-endpoints": "csp-endpoint=\"/csp-report\"",
+            "server": "railway-hikari",
+            "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+            "x-content-type-options": "nosniff",
+            "x-frame-options": "DENY",
+            "x-hikari-trace": "lax1.z1hw",
+            "x-permitted-cross-domain-policies": "none",
+            "x-railway-edge": "lax1",
+            "x-railway-request-id": "xa6mb7J5SP6INxHDLPU1MQ",
+            "x-request-id": "a5e7a7eb-847a-44eb-b6a6-1d2a67943aa0"
+          },
+          "body": {
+            "error": {
+              "code": "UNAUTHORIZED",
+              "message": "Unauthorized"
+            }
+          }
+        },
+        {
+          "url": "https://api.usetorus.com/.well-known/oauth-authorization-server",
+          "status": 401,
+          "headers": {
+            "content-length": "58",
+            "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' fonts.gstatic.com; connect-src 'self' wss: https:; frame-src 'self'; worker-src 'self' blob:; media-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests; report-uri /csp-report; report-to csp-endpoint",
+            "content-type": "application/json",
+            "cross-origin-opener-policy": "same-origin",
+            "cross-origin-resource-policy": "same-origin",
+            "date": "Wed, 12 Aug 2026 19:18:20 GMT",
+            "permissions-policy": "accelerometer=(), autoplay=(), camera=(), clipboard-read=(self), clipboard-write=(self), display-capture=(), encrypted-media=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), picture-in-picture=(), publickey-credentials-get=(self), screen-wake-lock=(), sync-xhr=(), usb=(), xr-spatial-tracking=()",
+            "referrer-policy": "strict-origin-when-cross-origin",
+            "report-to": "{\"group\":\"csp-endpoint\",\"max_age\":10886400,\"endpoints\":[{\"url\":\"/csp-report\"}]}",
+            "reporting-endpoints": "csp-endpoint=\"/csp-report\"",
+            "server": "railway-hikari",
+            "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+            "x-content-type-options": "nosniff",
+            "x-frame-options": "DENY",
+            "x-hikari-trace": "lax1.z1hw",
+            "x-permitted-cross-domain-policies": "none",
+            "x-railway-edge": "lax1",
+            "x-railway-request-id": "sNFzpvAZQFuTN-eLwUFZXw",
+            "x-request-id": "c650f746-3b01-4cef-8d09-98e01c7ed5ef"
+          },
+          "body": {
+            "error": {
+              "code": "UNAUTHORIZED",
+              "message": "Unauthorized"
+            }
+          }
+        },
+        {
+          "url": "https://api.usetorus.com/.well-known/openid-configuration",
+          "status": 401,
+          "headers": {
+            "content-length": "58",
+            "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' fonts.gstatic.com; connect-src 'self' wss: https:; frame-src 'self'; worker-src 'self' blob:; media-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests; report-uri /csp-report; report-to csp-endpoint",
+            "content-type": "application/json",
+            "cross-origin-opener-policy": "same-origin",
+            "cross-origin-resource-policy": "same-origin",
+            "date": "Wed, 12 Aug 2026 19:18:21 GMT",
+            "permissions-policy": "accelerometer=(), autoplay=(), camera=(), clipboard-read=(self), clipboard-write=(self), display-capture=(), encrypted-media=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), picture-in-picture=(), publickey-credentials-get=(self), screen-wake-lock=(), sync-xhr=(), usb=(), xr-spatial-tracking=()",
+            "referrer-policy": "strict-origin-when-cross-origin",
+            "report-to": "{\"group\":\"csp-endpoint\",\"max_age\":10886400,\"endpoints\":[{\"url\":\"/csp-report\"}]}",
+            "reporting-endpoints": "csp-endpoint=\"/csp-report\"",
+            "server": "railway-hikari",
+            "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+            "x-content-type-options": "nosniff",
+            "x-frame-options": "DENY",
+            "x-hikari-trace": "lax1.z1hw",
+            "x-permitted-cross-domain-policies": "none",
+            "x-railway-edge": "lax1",
+            "x-railway-request-id": "2SrmyZRyQ3KqPxxZ9I3ezw",
+            "x-request-id": "cbcf2c2f-0cf4-4da2-8b39-e1cd51f0844c"
+          },
+          "body": {
+            "error": {
+              "code": "UNAUTHORIZED",
+              "message": "Unauthorized"
+            }
+          }
+        }
+      ]
+    },
+    "additionalAuthorizationServers": [],
+    "protocol": {
+      "acceptedVersions": [],
+      "attempts": [
+        {
+          "version": "2025-11-25",
+          "status": 401,
+          "accepted": false
+        },
+        {
+          "version": "2025-06-18",
+          "status": 401,
+          "accepted": false
+        },
+        {
+          "version": "2025-03-26",
+          "status": 401,
+          "accepted": false
+        },
+        {
+          "version": "2024-11-05",
+          "status": 401,
+          "accepted": false
+        },
+        {
+          "version": "2024-10-07",
+          "status": 401,
+          "accepted": false
+        },
+        {
+          "version": "2026-07-28",
+          "status": 401,
+          "accepted": false
+        }
+      ]
+    }
+  }
+}
