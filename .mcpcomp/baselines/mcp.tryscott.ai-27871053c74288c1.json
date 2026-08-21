@@ -1,0 +1,272 @@
+{
+  "schemaVersion": 2,
+  "scannerVersion": "0.10.0",
+  "target": "https://mcp.tryscott.ai/mcp",
+  "scannedAt": "2026-08-21T06:49:16.526Z",
+  "grade": "D",
+  "authorizationConfigured": true,
+  "findings": [
+    {
+      "id": "discovery.authorization-server-metadata",
+      "family": "discovery",
+      "normative": "MUST",
+      "severity": "high",
+      "title": "Authorization-server metadata is undiscoverable",
+      "message": "None of the RFC 8414/OIDC discovery candidates returned a successful JSON metadata document.",
+      "evidence": [
+        "https://api.tryscott.ai/.well-known/oauth-authorization-server",
+        "https://api.tryscott.ai/.well-known/openid-configuration"
+      ],
+      "specReferences": [
+        {
+          "id": "MCP-Authorization-overview",
+          "url": "https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization#overview"
+        },
+        {
+          "id": "MCP-Authorization-metadata-discovery",
+          "url": "https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization#authorization-server-metadata-discovery"
+        }
+      ],
+      "probeTier": "passive",
+      "fix": "Serve authorization-server metadata at the RFC 8414 well-known URI for the listed issuer."
+    },
+    {
+      "id": "token-trust.rejected-credential-error-code",
+      "family": "token_trust",
+      "normative": "SHOULD",
+      "severity": "low",
+      "title": "The 401 for a rejected credential names no error code",
+      "message": "The server refused an invalid bearer token with 401 and the challenge \"Bearer resource_metadata=\\\"https://mcp.tryscott.ai/.well-known/oauth-protected-resource\\\"\", which carries no error attribute. OAuth 2.1 §5.3.1 says a resource server SHOULD include error (invalid_token, per §5.3.2) when the request presented a token that failed — the client then knows the credential was declined rather than merely missing. No reference client currently reads this on a 401, so nothing breaks today; it is the recommendation, reported as such.",
+      "evidence": [
+        "https://mcp.tryscott.ai/mcp — initialize with an invalid bearer token: HTTP 401",
+        "same request without a credential: HTTP 401"
+      ],
+      "specReferences": [
+        {
+          "id": "OAuth-2.1-resource-error-response",
+          "url": "https://datatracker.ietf.org/doc/html/draft-ietf-oauth-v2-1-13#section-5.3.1"
+        },
+        {
+          "id": "MCP-Token-handling",
+          "url": "https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization#token-handling"
+        }
+      ],
+      "probeTier": "passive",
+      "fix": "Add error=\"invalid_token\" to the WWW-Authenticate challenge on a 401 that rejects a presented token; leave it off the 401 for a request that carried none."
+    }
+  ],
+  "passedChecks": [
+    "discovery.protected-resource-metadata",
+    "discovery.challenge-metadata-pointer",
+    "discovery.authorization-servers",
+    "discovery.resource-identifier",
+    "client-compatibility.issuer-trailing-slash",
+    "client-compatibility.dpop-required",
+    "authorization.forbidden-without-credentials",
+    "client-compatibility.step-up-challenge",
+    "discovery.issuer-format",
+    "token-trust.resource-https",
+    "token-trust.bearer-methods-query",
+    "token-trust.scope-minimization",
+    "token-trust.offline-access",
+    "token-trust.invalid-token-rejection",
+    "discovery.challenge-on-rejected-credential",
+    "token-trust.rejected-credential-challenge",
+    "discovery.challenge-parameter-quoting"
+  ],
+  "skippedChecks": [
+    "discovery.issuer-identity",
+    "token-trust.endpoints-answer",
+    "discovery.additional-authorization-servers",
+    "client-compatibility.authorization-endpoint-query",
+    "client-compatibility.protocol-versions",
+    "client-compatibility.response-type-code",
+    "discovery.metadata-content-type",
+    "token-trust.endpoint-https",
+    "client-compatibility.pkce-s256",
+    "client-compatibility.client-registration",
+    "client-compatibility.dcr-deprecated",
+    "client-compatibility.issuer-response",
+    "client-compatibility.token-auth-method-interop",
+    "client-compatibility.issuer-path-refresh",
+    "client-compatibility.pkce-plain-offered",
+    "token-trust.endpoint-unroutable-host",
+    "token-trust.unauthenticated-operation",
+    "client-compatibility.public-client-auth",
+    "client-compatibility.dcr-durability",
+    "discovery.challenge-cors-exposure"
+  ],
+  "summary": {
+    "checked": 19,
+    "violated": 1,
+    "notRun": 20
+  },
+  "capabilities": {
+    "authorizationServerMetadata": false,
+    "pkceS256": null,
+    "dynamicClientRegistration": null,
+    "clientIdMetadataDocuments": null,
+    "issuerResponseParameter": null,
+    "clientCredentialsGrant": null,
+    "jwtBearerGrant": null
+  },
+  "probe": {
+    "serverUrl": "https://mcp.tryscott.ai/mcp",
+    "fetchedAt": "2026-08-21T06:49:16.526Z",
+    "challenge": {
+      "status": 405,
+      "header": "Bearer resource_metadata=\"https://mcp.tryscott.ai/.well-known/oauth-protected-resource\"",
+      "hasResourceMetadata": true,
+      "resourceMetadataUrl": "https://mcp.tryscott.ai/.well-known/oauth-protected-resource"
+    },
+    "prm": {
+      "url": "https://mcp.tryscott.ai/.well-known/oauth-protected-resource",
+      "retrieved": true,
+      "foundAtSubpath": false,
+      "foundAtRoot": true,
+      "resource": "https://mcp.tryscott.ai/mcp",
+      "authorizationServers": [
+        "https://api.tryscott.ai"
+      ],
+      "scopesSupported": [],
+      "raw": {
+        "resource": "https://mcp.tryscott.ai/mcp",
+        "authorization_servers": [
+          "https://api.tryscott.ai"
+        ],
+        "bearer_methods_supported": [
+          "header"
+        ]
+      },
+      "observations": [
+        {
+          "url": "https://mcp.tryscott.ai/mcp",
+          "status": 405,
+          "headers": {
+            "access-control-allow-credentials": "true",
+            "access-control-expose-headers": "MCP-Session-Id",
+            "content-length": "100",
+            "content-type": "application/json; charset=utf-8",
+            "date": "Fri, 21 Aug 2026 06:49:16 GMT",
+            "vary": "Origin",
+            "www-authenticate": "Bearer resource_metadata=\"https://mcp.tryscott.ai/.well-known/oauth-protected-resource\""
+          },
+          "body": {
+            "jsonrpc": "2.0",
+            "error": {
+              "code": -32000,
+              "message": "Server does not support GET requests"
+            },
+            "id": null
+          }
+        },
+        {
+          "url": "https://mcp.tryscott.ai/.well-known/oauth-protected-resource",
+          "status": 200,
+          "headers": {
+            "access-control-allow-credentials": "true",
+            "access-control-expose-headers": "MCP-Session-Id",
+            "content-length": "132",
+            "content-type": "application/json; charset=utf-8",
+            "date": "Fri, 21 Aug 2026 06:49:16 GMT",
+            "vary": "Origin"
+          },
+          "body": {
+            "resource": "https://mcp.tryscott.ai/mcp",
+            "authorization_servers": [
+              "https://api.tryscott.ai"
+            ],
+            "bearer_methods_supported": [
+              "header"
+            ]
+          }
+        }
+      ]
+    },
+    "asMetadata": {
+      "expectedIssuer": "https://api.tryscott.ai",
+      "retrieved": false,
+      "issuerMismatch": false,
+      "clientIdMetadataDocumentSupported": false,
+      "registeredRedirectUris": [],
+      "endpointLiveness": [],
+      "candidates": [
+        "https://api.tryscott.ai/.well-known/oauth-authorization-server",
+        "https://api.tryscott.ai/.well-known/openid-configuration"
+      ],
+      "observations": [
+        {
+          "url": "https://api.tryscott.ai/.well-known/oauth-authorization-server",
+          "status": 404,
+          "headers": {
+            "content-length": "22",
+            "content-type": "application/json",
+            "date": "Fri, 21 Aug 2026 06:49:16 GMT",
+            "server": "uvicorn",
+            "x-request-id": "27994ade-6746-4e52-bc99-403e080f197f"
+          },
+          "body": {
+            "detail": "Not Found"
+          }
+        },
+        {
+          "url": "https://api.tryscott.ai/.well-known/openid-configuration",
+          "status": 404,
+          "headers": {
+            "content-length": "22",
+            "content-type": "application/json",
+            "date": "Fri, 21 Aug 2026 06:49:16 GMT",
+            "server": "uvicorn",
+            "x-request-id": "3ec78f69-459c-4ec2-ab2c-8edcbccd891d"
+          },
+          "body": {
+            "detail": "Not Found"
+          }
+        }
+      ]
+    },
+    "additionalAuthorizationServers": [],
+    "protocol": {
+      "acceptedVersions": [],
+      "rejectedCredential": {
+        "status": 401,
+        "servedResult": false,
+        "challenge": "Bearer resource_metadata=\"https://mcp.tryscott.ai/.well-known/oauth-protected-resource\"",
+        "baselineChallenge": "Bearer resource_metadata=\"https://mcp.tryscott.ai/.well-known/oauth-protected-resource\""
+      },
+      "challenge": "Bearer resource_metadata=\"https://mcp.tryscott.ai/.well-known/oauth-protected-resource\"",
+      "attempts": [
+        {
+          "version": "2025-11-25",
+          "status": 401,
+          "accepted": false
+        },
+        {
+          "version": "2025-06-18",
+          "status": 401,
+          "accepted": false
+        },
+        {
+          "version": "2025-03-26",
+          "status": 401,
+          "accepted": false
+        },
+        {
+          "version": "2024-11-05",
+          "status": 401,
+          "accepted": false
+        },
+        {
+          "version": "2024-10-07",
+          "status": 401,
+          "accepted": false
+        },
+        {
+          "version": "2026-07-28",
+          "status": 401,
+          "accepted": false
+        }
+      ]
+    }
+  }
+}
