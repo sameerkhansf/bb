@@ -1,0 +1,625 @@
+{
+  "schemaVersion": 2,
+  "scannerVersion": "0.10.0",
+  "target": "https://mcp.useclick.ai/mcp",
+  "scannedAt": "2026-08-21T06:49:22.295Z",
+  "grade": "A",
+  "authorizationConfigured": true,
+  "findings": [
+    {
+      "id": "client-compatibility.issuer-response",
+      "family": "client_compatibility",
+      "normative": "SHOULD",
+      "severity": "medium",
+      "title": "Authorization-response issuer binding is not advertised",
+      "message": "The authorization server does not advertise authorization_response_iss_parameter_supported, reducing protection against authorization-server mix-up during callback. This advisory is a dated forecast, in the specification's own words: \"A future revision of this specification is expected to upgrade authorization server inclusion of iss from SHOULD to MUST.\" When that revision ships, this finding becomes a requirement violation.",
+      "evidence": [
+        "https://exquisite-constellation-40.authkit.app/.well-known/oauth-authorization-server"
+      ],
+      "specReferences": [
+        {
+          "id": "RFC-9207-iss-parameter",
+          "url": "https://www.rfc-editor.org/rfc/rfc9207.html#section-2"
+        }
+      ],
+      "probeTier": "passive",
+      "fix": "Enable RFC 9207 and advertise authorization_response_iss_parameter_supported: true."
+    }
+  ],
+  "passedChecks": [
+    "discovery.protected-resource-metadata",
+    "discovery.challenge-metadata-pointer",
+    "discovery.authorization-servers",
+    "discovery.resource-identifier",
+    "discovery.issuer-identity",
+    "discovery.authorization-server-metadata",
+    "token-trust.endpoints-answer",
+    "client-compatibility.pkce-s256",
+    "client-compatibility.client-registration",
+    "client-compatibility.dcr-deprecated",
+    "client-compatibility.token-auth-method-interop",
+    "client-compatibility.authorization-endpoint-query",
+    "client-compatibility.issuer-path-refresh",
+    "client-compatibility.issuer-trailing-slash",
+    "client-compatibility.dpop-required",
+    "authorization.forbidden-without-credentials",
+    "client-compatibility.step-up-challenge",
+    "client-compatibility.dcr-durability",
+    "token-trust.endpoint-https",
+    "client-compatibility.public-client-auth",
+    "token-trust.endpoint-unroutable-host",
+    "client-compatibility.pkce-plain-offered",
+    "client-compatibility.response-type-code",
+    "discovery.issuer-format",
+    "token-trust.resource-https",
+    "token-trust.bearer-methods-query",
+    "discovery.metadata-content-type",
+    "token-trust.scope-minimization",
+    "token-trust.offline-access",
+    "token-trust.invalid-token-rejection",
+    "discovery.challenge-on-rejected-credential",
+    "token-trust.rejected-credential-challenge",
+    "token-trust.rejected-credential-error-code",
+    "discovery.challenge-parameter-quoting"
+  ],
+  "skippedChecks": [
+    "discovery.additional-authorization-servers",
+    "client-compatibility.protocol-versions",
+    "token-trust.unauthenticated-operation",
+    "discovery.challenge-cors-exposure"
+  ],
+  "summary": {
+    "checked": 35,
+    "violated": 0,
+    "notRun": 4
+  },
+  "capabilities": {
+    "authorizationServerMetadata": true,
+    "pkceS256": true,
+    "dynamicClientRegistration": true,
+    "clientIdMetadataDocuments": true,
+    "issuerResponseParameter": false,
+    "clientCredentialsGrant": false,
+    "jwtBearerGrant": false
+  },
+  "probe": {
+    "serverUrl": "https://mcp.useclick.ai/mcp",
+    "fetchedAt": "2026-08-21T06:49:22.295Z",
+    "challenge": {
+      "status": 401,
+      "header": "Bearer resource_metadata=\"https://mcp.useclick.ai/.well-known/oauth-protected-resource\"",
+      "cors": {
+        "origin": "https://mcpcomp-probe.invalid",
+        "status": 403,
+        "exposeHeaders": []
+      },
+      "hasResourceMetadata": true,
+      "resourceMetadataUrl": "https://mcp.useclick.ai/.well-known/oauth-protected-resource"
+    },
+    "prm": {
+      "url": "https://mcp.useclick.ai/.well-known/oauth-protected-resource",
+      "retrieved": true,
+      "foundAtSubpath": false,
+      "foundAtRoot": true,
+      "resource": "https://mcp.useclick.ai/mcp",
+      "authorizationServers": [
+        "https://exquisite-constellation-40.authkit.app"
+      ],
+      "scopesSupported": [],
+      "raw": {
+        "resource": "https://mcp.useclick.ai/mcp",
+        "authorization_servers": [
+          "https://exquisite-constellation-40.authkit.app"
+        ],
+        "bearer_methods_supported": [
+          "header"
+        ]
+      },
+      "observations": [
+        {
+          "url": "https://mcp.useclick.ai/mcp",
+          "status": 401,
+          "headers": {
+            "access-control-allow-headers": "Authorization, Content-Type, Last-Event-ID, Mcp-Protocol-Version, Mcp-Session-Id",
+            "access-control-allow-methods": "POST, OPTIONS",
+            "access-control-expose-headers": "Mcp-Protocol-Version, Mcp-Session-Id, WWW-Authenticate",
+            "alt-svc": "h3=\":443\"; ma=86400",
+            "cf-cache-status": "DYNAMIC",
+            "cf-ray": "a2e7b27d6c0ef2c6-IAD",
+            "content-length": "46",
+            "content-type": "application/json; charset=utf-8",
+            "date": "Fri, 21 Aug 2026 06:49:20 GMT",
+            "etag": "W/\"2e-+GCMZtlzfIGjd8I/vd/k6cNqt7U\"",
+            "nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+            "referrer-policy": "no-referrer",
+            "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=%2Fc%2FgJRyE%2FuODAyPRgp5bwDjD%2BVEv7u3m55neOPKtDC2LE4LTZcfn6szjpczVeLL4%2FqvFUHKZwUrSdsgsse%2Bes8BDVFYdVW9B3j4kaVCUaXt7%2BWVRnBBlOlmU2nyVKbls%2FFw%3D\"}]}",
+            "server": "cloudflare",
+            "www-authenticate": "Bearer resource_metadata=\"https://mcp.useclick.ai/.well-known/oauth-protected-resource\"",
+            "x-content-type-options": "nosniff",
+            "x-frame-options": "DENY",
+            "x-hikari-trace": "jfk1.pqzh",
+            "x-railway-edge": "jfk1",
+            "x-railway-request-id": "68-GFwXpR_ykZHRPjq4OvQ"
+          },
+          "body": {
+            "error": "Bearer authentication is required."
+          }
+        },
+        {
+          "url": "https://mcp.useclick.ai/.well-known/oauth-protected-resource",
+          "status": 200,
+          "headers": {
+            "alt-svc": "h3=\":443\"; ma=86400",
+            "cache-control": "public, max-age=300",
+            "cf-cache-status": "DYNAMIC",
+            "cf-ray": "a2e7b2825dadf2c6-IAD",
+            "content-encoding": "zstd",
+            "content-type": "application/json; charset=utf-8",
+            "date": "Fri, 21 Aug 2026 06:49:21 GMT",
+            "etag": "W/\"9b-gqVa7VgVp3Opjd6vlMc+ueXJ+vs\"",
+            "nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+            "referrer-policy": "no-referrer",
+            "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=OVFpW4xvG0C%2Bpw2iV4kSS0DBcRbnkcHm7PgTCE6URsFGQpQPSl3iVVuuEiLMRP%2FP4FL9llS%2BSIR2AjmiTWWj1gYbYQcC1cgLx3XoUr9FzHCoRNs%2Bh4w%2BfENPdiARHrguHCk%3D\"}]}",
+            "server": "cloudflare",
+            "x-content-type-options": "nosniff",
+            "x-frame-options": "DENY",
+            "x-hikari-trace": "jfk1.pqzh",
+            "x-railway-edge": "jfk1",
+            "x-railway-request-id": "u63GKqEDQxS5fpcECYBc-A"
+          },
+          "body": {
+            "resource": "https://mcp.useclick.ai/mcp",
+            "authorization_servers": [
+              "https://exquisite-constellation-40.authkit.app"
+            ],
+            "bearer_methods_supported": [
+              "header"
+            ]
+          }
+        }
+      ]
+    },
+    "asMetadata": {
+      "expectedIssuer": "https://exquisite-constellation-40.authkit.app",
+      "retrieved": true,
+      "issuerMismatch": false,
+      "issuer": "https://exquisite-constellation-40.authkit.app",
+      "authorizationEndpoint": "https://exquisite-constellation-40.authkit.app/oauth2/authorize",
+      "tokenEndpoint": "https://exquisite-constellation-40.authkit.app/oauth2/token",
+      "registrationEndpoint": "https://exquisite-constellation-40.authkit.app/oauth2/register",
+      "codeChallengeMethodsSupported": [
+        "S256"
+      ],
+      "grantTypesSupported": [
+        "authorization_code",
+        "refresh_token",
+        "urn:ietf:params:oauth:grant-type:device_code"
+      ],
+      "tokenEndpointAuthMethodsSupported": [
+        "none",
+        "client_secret_post",
+        "client_secret_basic"
+      ],
+      "scopesSupported": [
+        "email",
+        "offline_access",
+        "openid",
+        "profile"
+      ],
+      "clientIdMetadataDocumentSupported": true,
+      "registeredRedirectUris": [],
+      "endpointLiveness": [
+        {
+          "url": "https://exquisite-constellation-40.authkit.app/oauth2/authorize?client_id=mcpcomp-probe-unregistered&response_type=code&redirect_uri=https%3A%2F%2Fmcpcomp.invalid%2Fprobe&code_challenge=E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM&code_challenge_method=S256",
+          "status": 302,
+          "headers": {
+            "access-control-allow-credentials": "true",
+            "age": "0",
+            "cache-control": "public, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "cf-ray": "a2e7b2851dc23496-IAD",
+            "content-length": "0",
+            "content-security-policy": "default-src 'self';base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+            "content-security-policy-report-only": "default-src 'self'; script-src 'self' 'nonce-AxcWp75U17weV7awnGIDWA==' 'unsafe-inline' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' *; img-src * data:; font-src * data:; connect-src *; frame-src 'self' https://challenges.cloudflare.com; frame-ancestors https://bolt.new https://lovable.dev https://replit.com https://riff.new https://v0.app; upgrade-insecure-requests; worker-src 'self'; report-uri https://browser-intake-datadoghq.com/api/v2/logs?dd-api-key=pubb28ba93eb59013963476c6dd6c190040&dd-evp-origin=content-security-policy&ddsource=csp-report; report-to csp-datadog",
+            "date": "Fri, 21 Aug 2026 06:49:21 GMT",
+            "expect-ct": "max-age=0",
+            "location": "https://exquisite-constellation-40.authkit.app/oauth2/error?error=application_not_found",
+            "referrer-policy": "no-referrer",
+            "reporting-endpoints": "csp-datadog=\"https://browser-intake-datadoghq.com/api/v2/logs?dd-api-key=pubb28ba93eb59013963476c6dd6c190040&dd-evp-origin=content-security-policy&ddsource=csp-report\"",
+            "server": "cloudflare",
+            "set-cookie": "[redacted]",
+            "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+            "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Origin, Accept",
+            "x-content-type-options": "nosniff",
+            "x-dns-prefetch-control": "off",
+            "x-download-options": "noopen",
+            "x-envoy-upstream-service-time": "15",
+            "x-frame-options": "SAMEORIGIN",
+            "x-matched-path": "/oauth2/[[...path]]",
+            "x-nonce": "AxcWp75U17weV7awnGIDWA==",
+            "x-permitted-cross-domain-policies": "none",
+            "x-request-id": "66884026-21a7-41df-be8f-6e095ccb2a2a",
+            "x-vercel-cache": "MISS",
+            "x-vercel-id": "iad1::iad1::rq2cw-1787294961464-f909db70452c",
+            "x-xss-protection": "0"
+          },
+          "body": "",
+          "metadataField": "authorization_endpoint"
+        },
+        {
+          "url": "https://exquisite-constellation-40.authkit.app/oauth2/token",
+          "status": 404,
+          "headers": {
+            "access-control-allow-credentials": "true",
+            "age": "0",
+            "cache-control": "public, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "cf-ray": "a2e7b285cf483496-IAD",
+            "content-encoding": "br",
+            "content-security-policy": "default-src 'self';base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+            "content-security-policy-report-only": "default-src 'self'; script-src 'self' 'nonce-7KVfyz/Lf8U8JUHPF+Tjdw==' 'unsafe-inline' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' *; img-src * data:; font-src * data:; connect-src *; frame-src 'self' https://challenges.cloudflare.com; frame-ancestors https://bolt.new https://lovable.dev https://replit.com https://riff.new https://v0.app; upgrade-insecure-requests; worker-src 'self'; report-uri https://browser-intake-datadoghq.com/api/v2/logs?dd-api-key=pubb28ba93eb59013963476c6dd6c190040&dd-evp-origin=content-security-policy&ddsource=csp-report; report-to csp-datadog",
+            "content-type": "application/json; charset=utf-8",
+            "date": "Fri, 21 Aug 2026 06:49:21 GMT",
+            "etag": "W/\"46-Xmp0JJH9HvgA0pfe9mtavWSdM7Y\"",
+            "expect-ct": "max-age=0",
+            "referrer-policy": "no-referrer",
+            "reporting-endpoints": "csp-datadog=\"https://browser-intake-datadoghq.com/api/v2/logs?dd-api-key=pubb28ba93eb59013963476c6dd6c190040&dd-evp-origin=content-security-policy&ddsource=csp-report\"",
+            "server": "cloudflare",
+            "set-cookie": "[redacted]",
+            "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+            "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Origin, Accept-Encoding",
+            "x-content-type-options": "nosniff",
+            "x-dns-prefetch-control": "off",
+            "x-download-options": "noopen",
+            "x-envoy-upstream-service-time": "2",
+            "x-frame-options": "SAMEORIGIN",
+            "x-matched-path": "/oauth2/[[...path]]",
+            "x-nonce": "7KVfyz/Lf8U8JUHPF+Tjdw==",
+            "x-permitted-cross-domain-policies": "none",
+            "x-request-id": "1fe53c35-5512-4281-9d8b-721c8f976f05",
+            "x-vercel-cache": "MISS",
+            "x-vercel-id": "iad1::iad1::f7cnj-1787294961574-300965b879ae",
+            "x-xss-protection": "0"
+          },
+          "body": {
+            "message": "The requested resource was not found",
+            "error": "Not Found"
+          },
+          "metadataField": "token_endpoint"
+        },
+        {
+          "url": "https://exquisite-constellation-40.authkit.app/oauth2/register",
+          "status": 404,
+          "headers": {
+            "access-control-allow-credentials": "true",
+            "age": "0",
+            "cache-control": "public, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "cf-ray": "a2e7b286587e3496-IAD",
+            "content-encoding": "br",
+            "content-security-policy": "default-src 'self';base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+            "content-security-policy-report-only": "default-src 'self'; script-src 'self' 'nonce-5XacdOv7Mg1/7krdQet7oQ==' 'unsafe-inline' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' *; img-src * data:; font-src * data:; connect-src *; frame-src 'self' https://challenges.cloudflare.com; frame-ancestors https://bolt.new https://lovable.dev https://replit.com https://riff.new https://v0.app; upgrade-insecure-requests; worker-src 'self'; report-uri https://browser-intake-datadoghq.com/api/v2/logs?dd-api-key=pubb28ba93eb59013963476c6dd6c190040&dd-evp-origin=content-security-policy&ddsource=csp-report; report-to csp-datadog",
+            "content-type": "application/json; charset=utf-8",
+            "date": "Fri, 21 Aug 2026 06:49:21 GMT",
+            "etag": "W/\"46-Xmp0JJH9HvgA0pfe9mtavWSdM7Y\"",
+            "expect-ct": "max-age=0",
+            "referrer-policy": "no-referrer",
+            "reporting-endpoints": "csp-datadog=\"https://browser-intake-datadoghq.com/api/v2/logs?dd-api-key=pubb28ba93eb59013963476c6dd6c190040&dd-evp-origin=content-security-policy&ddsource=csp-report\"",
+            "server": "cloudflare",
+            "set-cookie": "[redacted]",
+            "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+            "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Origin, Accept-Encoding",
+            "x-content-type-options": "nosniff",
+            "x-dns-prefetch-control": "off",
+            "x-download-options": "noopen",
+            "x-envoy-upstream-service-time": "1",
+            "x-frame-options": "SAMEORIGIN",
+            "x-matched-path": "/oauth2/[[...path]]",
+            "x-nonce": "5XacdOv7Mg1/7krdQet7oQ==",
+            "x-permitted-cross-domain-policies": "none",
+            "x-request-id": "7a318bad-8d28-4368-8f93-b28881ce552d",
+            "x-vercel-cache": "MISS",
+            "x-vercel-id": "iad1::iad1::f7cnj-1787294961663-a3ba1ed14ab5",
+            "x-xss-protection": "0"
+          },
+          "body": {
+            "message": "The requested resource was not found",
+            "error": "Not Found"
+          },
+          "metadataField": "registration_endpoint"
+        },
+        {
+          "url": "https://exquisite-constellation-40.authkit.app/oauth2/jwks",
+          "status": 200,
+          "headers": {
+            "access-control-allow-credentials": "true",
+            "age": "0",
+            "cache-control": "public, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "cf-ray": "a2e7b286d9ba3496-IAD",
+            "content-encoding": "br",
+            "content-security-policy": "default-src 'self';base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+            "content-security-policy-report-only": "default-src 'self'; script-src 'self' 'nonce-obrvYEp0Udle3iTfU7gnWw==' 'unsafe-inline' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' *; img-src * data:; font-src * data:; connect-src *; frame-src 'self' https://challenges.cloudflare.com; frame-ancestors https://bolt.new https://lovable.dev https://replit.com https://riff.new https://v0.app; upgrade-insecure-requests; worker-src 'self'; report-uri https://browser-intake-datadoghq.com/api/v2/logs?dd-api-key=pubb28ba93eb59013963476c6dd6c190040&dd-evp-origin=content-security-policy&ddsource=csp-report; report-to csp-datadog",
+            "content-type": "application/json; charset=utf-8",
+            "date": "Fri, 21 Aug 2026 06:49:21 GMT",
+            "etag": "W/\"5c3-4gIFxX4wpjY9NDWP9q62HxgymYk\"",
+            "expect-ct": "max-age=0",
+            "referrer-policy": "no-referrer",
+            "reporting-endpoints": "csp-datadog=\"https://browser-intake-datadoghq.com/api/v2/logs?dd-api-key=pubb28ba93eb59013963476c6dd6c190040&dd-evp-origin=content-security-policy&ddsource=csp-report\"",
+            "server": "cloudflare",
+            "set-cookie": "[redacted]",
+            "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+            "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Origin, Accept-Encoding",
+            "x-content-type-options": "nosniff",
+            "x-dns-prefetch-control": "off",
+            "x-download-options": "noopen",
+            "x-envoy-upstream-service-time": "8",
+            "x-frame-options": "SAMEORIGIN",
+            "x-matched-path": "/oauth2/[[...path]]",
+            "x-nonce": "obrvYEp0Udle3iTfU7gnWw==",
+            "x-permitted-cross-domain-policies": "none",
+            "x-request-id": "1137ca51-1f9a-4fbd-b0e5-23f5fcf87bfe",
+            "x-vercel-cache": "MISS",
+            "x-vercel-id": "iad1::iad1::f7cnj-1787294961744-85d6e2e00d6b",
+            "x-xss-protection": "0"
+          },
+          "body": {
+            "keys": [
+              {
+                "alg": "RS256",
+                "kty": "RSA",
+                "use": "sig",
+                "n": "2hp9t3_u_kHtIGa2-7j494QAYke3-KUDN8OxX3zmBp1xwaTtak052cy5lFiSOfNjFVpHZFcmrNojqd_yVb3XeDICrXorp7lVRW9zB6NARuS4PzoIdErAN9GWYsl6dvO_MoelhyC8moB9ibtecRLznTxF-JfKaGMtNvtwXERLhWQNj_RcKSnbymF11SOLJ6X0TCNRvptfbW0JAzlLAN8UJDBEvSwNwH4drv-MdY5f0QEThhP4sxQtfzmOn_QqmZpfcyQlpWUKY7TxqHdKpj4kGOXXk4o7Gea0CgPjg-rKcOY41Q84TQ46EA42CqmG5l8I83YPFCY1YpgNxArRkKOavw",
+                "e": "AQAB",
+                "kid": "sso_oidc_key_pair_01KMTRPX03PBP1RJ7HQJMKB1PC",
+                "x5c": [
+                  "MIICvjCCAaagAwIBAgISQAAAZ01i3PAugo05cUT5MM72MA0GCSqGSIb3DQEBBQUAMBoxGDAWBgNVBAMTD2F1dGgud29ya29zLmNvbTAeFw0yNjAzMjgxNzQzNDRaFw0zMTAzMjgxNzQzNDRaMBoxGDAWBgNVBAMTD2F1dGgud29ya29zLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANoafbd/7v5B7SBmtvu4+PeEAGJHt/ilAzfDsV985gadccGk7WpNOdnMuZRYkjnzYxVaR2RXJqzaI6nf8lW913gyAq16K6e5VUVvcwejQEbkuD86CHRKwDfRlmLJenbzvzKHpYcgvJqAfYm7XnES8508RfiXymhjLTb7cFxES4VkDY/0XCkp28phddUjiyel9EwjUb6bX21tCQM5SwDfFCQwRL0sDcB+Ha7/jHWOX9EBE4YT+LMULX85jp/0KpmaX3MkJaVlCmO08ah3SqY+JBjl15OKOxnmtAoD44PqynDmONUPOE0OOhAONgqphuZfCPN2DxQmNWKYDcQK0ZCjmr8CAwEAATANBgkqhkiG9w0BAQUFAAOCAQEApAa3J76LnYJCkKcE/t/iS32mIxoef1aXCRQXWJMM4RYOYPB+BHDKj+Wj0CcZkh+Aw+Qne5XKNih+qOK5rX7yX/C8/q2Bbgv2Zoq9e9eWSXWEr1CEMGHDUZ0Dm5rd2O8GyX1m04mfSlbzODkHVexyohsJ5AAtkeUxKwjCLRroiCbv+udfGIFd1Iubdw59td5goy5vtLNgVttlxKN+QOXGFh2v/B2b2VFL4XoUwoDZMq7xJeyob9M5MvUltAfWrPgBFn6oKaX7ZChaVPJHR1klicffLgc/MDA47Rqqw5nRuHH1ZAjy3ZBA997RhZKVSqeAm/cOPrmuiAWTrUi1hoKJUw=="
+                ],
+                "x5t#S256": "mBZuJhtHMy05mAgb9M-H2cqj9u7w9LKptxyI3ixFSec"
+              }
+            ]
+          },
+          "metadataField": "jwks_uri"
+        },
+        {
+          "url": "https://exquisite-constellation-40.authkit.app/oauth2/introspection",
+          "status": 404,
+          "headers": {
+            "access-control-allow-credentials": "true",
+            "age": "0",
+            "cache-control": "public, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "cf-ray": "a2e7b2876b093496-IAD",
+            "content-encoding": "br",
+            "content-security-policy": "default-src 'self';base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+            "content-security-policy-report-only": "default-src 'self'; script-src 'self' 'nonce-3mY5r3UX/gl8UPdgUf6UCQ==' 'unsafe-inline' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' *; img-src * data:; font-src * data:; connect-src *; frame-src 'self' https://challenges.cloudflare.com; frame-ancestors https://bolt.new https://lovable.dev https://replit.com https://riff.new https://v0.app; upgrade-insecure-requests; worker-src 'self'; report-uri https://browser-intake-datadoghq.com/api/v2/logs?dd-api-key=pubb28ba93eb59013963476c6dd6c190040&dd-evp-origin=content-security-policy&ddsource=csp-report; report-to csp-datadog",
+            "content-type": "application/json; charset=utf-8",
+            "date": "Fri, 21 Aug 2026 06:49:22 GMT",
+            "etag": "W/\"46-Xmp0JJH9HvgA0pfe9mtavWSdM7Y\"",
+            "expect-ct": "max-age=0",
+            "referrer-policy": "no-referrer",
+            "reporting-endpoints": "csp-datadog=\"https://browser-intake-datadoghq.com/api/v2/logs?dd-api-key=pubb28ba93eb59013963476c6dd6c190040&dd-evp-origin=content-security-policy&ddsource=csp-report\"",
+            "server": "cloudflare",
+            "set-cookie": "[redacted]",
+            "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+            "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Origin, Accept-Encoding",
+            "x-content-type-options": "nosniff",
+            "x-dns-prefetch-control": "off",
+            "x-download-options": "noopen",
+            "x-envoy-upstream-service-time": "2",
+            "x-frame-options": "SAMEORIGIN",
+            "x-matched-path": "/oauth2/[[...path]]",
+            "x-nonce": "3mY5r3UX/gl8UPdgUf6UCQ==",
+            "x-permitted-cross-domain-policies": "none",
+            "x-request-id": "35beca16-4bc6-4cb1-940d-44202050a8c6",
+            "x-vercel-cache": "MISS",
+            "x-vercel-id": "iad1::iad1::4zs8q-1787294961832-721e0f25407f",
+            "x-xss-protection": "0"
+          },
+          "body": {
+            "message": "The requested resource was not found",
+            "error": "Not Found"
+          },
+          "metadataField": "introspection_endpoint"
+        },
+        {
+          "url": "https://exquisite-constellation-40.authkit.app/oauth2/device_authorization",
+          "status": 404,
+          "headers": {
+            "access-control-allow-credentials": "true",
+            "age": "0",
+            "cache-control": "public, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "cf-ray": "a2e7b289d8743496-IAD",
+            "content-encoding": "br",
+            "content-security-policy": "default-src 'self';base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+            "content-security-policy-report-only": "default-src 'self'; script-src 'self' 'nonce-PFsHKQ38+5t2FWpqigU7sg==' 'unsafe-inline' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' *; img-src * data:; font-src * data:; connect-src *; frame-src 'self' https://challenges.cloudflare.com; frame-ancestors https://bolt.new https://lovable.dev https://replit.com https://riff.new https://v0.app; upgrade-insecure-requests; worker-src 'self'; report-uri https://browser-intake-datadoghq.com/api/v2/logs?dd-api-key=pubb28ba93eb59013963476c6dd6c190040&dd-evp-origin=content-security-policy&ddsource=csp-report; report-to csp-datadog",
+            "content-type": "application/json; charset=utf-8",
+            "date": "Fri, 21 Aug 2026 06:49:22 GMT",
+            "etag": "W/\"46-Xmp0JJH9HvgA0pfe9mtavWSdM7Y\"",
+            "expect-ct": "max-age=0",
+            "referrer-policy": "no-referrer",
+            "reporting-endpoints": "csp-datadog=\"https://browser-intake-datadoghq.com/api/v2/logs?dd-api-key=pubb28ba93eb59013963476c6dd6c190040&dd-evp-origin=content-security-policy&ddsource=csp-report\"",
+            "server": "cloudflare",
+            "set-cookie": "[redacted]",
+            "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+            "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Origin, Accept-Encoding",
+            "x-content-type-options": "nosniff",
+            "x-dns-prefetch-control": "off",
+            "x-download-options": "noopen",
+            "x-envoy-upstream-service-time": "2",
+            "x-frame-options": "SAMEORIGIN",
+            "x-matched-path": "/oauth2/[[...path]]",
+            "x-nonce": "PFsHKQ38+5t2FWpqigU7sg==",
+            "x-permitted-cross-domain-policies": "none",
+            "x-request-id": "fa1fafbf-4279-4e29-a0d7-d15d925dea19",
+            "x-vercel-cache": "MISS",
+            "x-vercel-id": "iad1::iad1::4zs8q-1787294962223-42d81165d568",
+            "x-xss-protection": "0"
+          },
+          "body": {
+            "message": "The requested resource was not found",
+            "error": "Not Found"
+          },
+          "metadataField": "device_authorization_endpoint"
+        }
+      ],
+      "url": "https://exquisite-constellation-40.authkit.app/.well-known/oauth-authorization-server",
+      "raw": {
+        "issuer": "https://exquisite-constellation-40.authkit.app",
+        "authorization_endpoint": "https://exquisite-constellation-40.authkit.app/oauth2/authorize",
+        "token_endpoint": "https://exquisite-constellation-40.authkit.app/oauth2/token",
+        "registration_endpoint": "https://exquisite-constellation-40.authkit.app/oauth2/register",
+        "scopes_supported": [
+          "email",
+          "offline_access",
+          "openid",
+          "profile"
+        ],
+        "response_types_supported": [
+          "code"
+        ],
+        "response_modes_supported": [
+          "query"
+        ],
+        "grant_types_supported": [
+          "authorization_code",
+          "refresh_token",
+          "urn:ietf:params:oauth:grant-type:device_code"
+        ],
+        "token_endpoint_auth_methods_supported": [
+          "none",
+          "client_secret_post",
+          "client_secret_basic"
+        ],
+        "introspection_endpoint": "https://exquisite-constellation-40.authkit.app/oauth2/introspection",
+        "code_challenge_methods_supported": [
+          "S256"
+        ],
+        "client_id_metadata_document_supported": true,
+        "device_authorization_endpoint": "https://exquisite-constellation-40.authkit.app/oauth2/device_authorization",
+        "jwks_uri": "https://exquisite-constellation-40.authkit.app/oauth2/jwks"
+      },
+      "candidates": [
+        "https://exquisite-constellation-40.authkit.app/.well-known/oauth-authorization-server",
+        "https://exquisite-constellation-40.authkit.app/.well-known/openid-configuration"
+      ],
+      "observations": [
+        {
+          "url": "https://exquisite-constellation-40.authkit.app/.well-known/oauth-authorization-server",
+          "status": 200,
+          "headers": {
+            "access-control-allow-credentials": "true",
+            "age": "0",
+            "cache-control": "public, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "cf-ray": "a2e7b28309133496-IAD",
+            "content-encoding": "br",
+            "content-security-policy": "default-src 'self';base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+            "content-security-policy-report-only": "default-src 'self'; script-src 'self' 'nonce-1efUO5Rm2tAJSpThkEcoaA==' 'unsafe-inline' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' *; img-src * data:; font-src * data:; connect-src *; frame-src 'self' https://challenges.cloudflare.com; frame-ancestors https://bolt.new https://lovable.dev https://replit.com https://riff.new https://v0.app; upgrade-insecure-requests; worker-src 'self'; report-uri https://browser-intake-datadoghq.com/api/v2/logs?dd-api-key=pubb28ba93eb59013963476c6dd6c190040&dd-evp-origin=content-security-policy&ddsource=csp-report; report-to csp-datadog",
+            "content-type": "application/json; charset=utf-8",
+            "date": "Fri, 21 Aug 2026 06:49:21 GMT",
+            "etag": "W/\"3ff-/dVQr6nIaqBf2Aj7QOVNg+BL/J8\"",
+            "expect-ct": "max-age=0",
+            "referrer-policy": "no-referrer",
+            "reporting-endpoints": "csp-datadog=\"https://browser-intake-datadoghq.com/api/v2/logs?dd-api-key=pubb28ba93eb59013963476c6dd6c190040&dd-evp-origin=content-security-policy&ddsource=csp-report\"",
+            "server": "cloudflare",
+            "set-cookie": "[redacted]",
+            "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+            "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Origin, Accept-Encoding",
+            "x-content-type-options": "nosniff",
+            "x-dns-prefetch-control": "off",
+            "x-download-options": "noopen",
+            "x-envoy-upstream-service-time": "20",
+            "x-frame-options": "SAMEORIGIN",
+            "x-matched-path": "/.well-known/[[...path]]",
+            "x-nonce": "1efUO5Rm2tAJSpThkEcoaA==",
+            "x-permitted-cross-domain-policies": "none",
+            "x-request-id": "3d542e31-8aae-43e8-981d-6075075eca87",
+            "x-vercel-cache": "MISS",
+            "x-vercel-id": "iad1::iad1::bh4fs-1787294961349-57f5b2a84a22",
+            "x-xss-protection": "0"
+          },
+          "body": {
+            "authorization_endpoint": "https://exquisite-constellation-40.authkit.app/oauth2/authorize",
+            "client_id_metadata_document_supported": true,
+            "code_challenge_methods_supported": [
+              "S256"
+            ],
+            "device_authorization_endpoint": "https://exquisite-constellation-40.authkit.app/oauth2/device_authorization",
+            "grant_types_supported": [
+              "authorization_code",
+              "refresh_token",
+              "urn:ietf:params:oauth:grant-type:device_code"
+            ],
+            "introspection_endpoint": "https://exquisite-constellation-40.authkit.app/oauth2/introspection",
+            "issuer": "https://exquisite-constellation-40.authkit.app",
+            "jwks_uri": "https://exquisite-constellation-40.authkit.app/oauth2/jwks",
+            "registration_endpoint": "https://exquisite-constellation-40.authkit.app/oauth2/register",
+            "scopes_supported": [
+              "email",
+              "offline_access",
+              "openid",
+              "profile"
+            ],
+            "response_modes_supported": [
+              "query"
+            ],
+            "response_types_supported": [
+              "code"
+            ],
+            "token_endpoint": "https://exquisite-constellation-40.authkit.app/oauth2/token",
+            "token_endpoint_auth_methods_supported": [
+              "none",
+              "client_secret_post",
+              "client_secret_basic"
+            ]
+          }
+        }
+      ]
+    },
+    "additionalAuthorizationServers": [],
+    "protocol": {
+      "acceptedVersions": [],
+      "rejectedCredential": {
+        "status": 401,
+        "servedResult": false,
+        "challenge": "Bearer error=\"invalid_token\", error_description=\"Invalid bearer token.\", resource_metadata=\"https://mcp.useclick.ai/.well-known/oauth-protected-resource\"",
+        "baselineChallenge": "Bearer resource_metadata=\"https://mcp.useclick.ai/.well-known/oauth-protected-resource\""
+      },
+      "challenge": "Bearer resource_metadata=\"https://mcp.useclick.ai/.well-known/oauth-protected-resource\"",
+      "attempts": [
+        {
+          "version": "2025-11-25",
+          "status": 401,
+          "accepted": false
+        },
+        {
+          "version": "2025-06-18",
+          "status": 401,
+          "accepted": false
+        },
+        {
+          "version": "2025-03-26",
+          "status": 401,
+          "accepted": false
+        },
+        {
+          "version": "2024-11-05",
+          "status": 401,
+          "accepted": false
+        },
+        {
+          "version": "2024-10-07",
+          "status": 401,
+          "accepted": false
+        },
+        {
+          "version": "2026-07-28",
+          "status": 401,
+          "accepted": false
+        }
+      ]
+    }
+  }
+}
