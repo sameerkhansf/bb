@@ -1,0 +1,221 @@
+{
+  "schemaVersion": 2,
+  "scannerVersion": "0.10.0",
+  "target": "https://mcp.useclick.ai/mcp",
+  "scannedAt": "2026-09-23T06:49:16.558Z",
+  "grade": null,
+  "authorizationConfigured": false,
+  "inconclusive": "The endpoint answered but never demanded authorization and did not serve the probed MCP operation, so there is no authorization surface at this URL to audit.",
+  "findings": [],
+  "passedChecks": [],
+  "skippedChecks": [
+    "endpoint-not-a-protected-resource"
+  ],
+  "capabilities": {
+    "authorizationServerMetadata": false,
+    "pkceS256": null,
+    "dynamicClientRegistration": null,
+    "clientIdMetadataDocuments": null,
+    "issuerResponseParameter": null,
+    "clientCredentialsGrant": null,
+    "jwtBearerGrant": null
+  },
+  "probe": {
+    "serverUrl": "https://mcp.useclick.ai/mcp",
+    "fetchedAt": "2026-09-23T06:49:16.558Z",
+    "challenge": {
+      "status": 404,
+      "hasResourceMetadata": false
+    },
+    "prm": {
+      "retrieved": false,
+      "foundAtSubpath": false,
+      "foundAtRoot": false,
+      "authorizationServers": [],
+      "scopesSupported": [],
+      "error": "Error: Resource server does not implement OAuth 2.0 Protected Resource Metadata.",
+      "observations": [
+        {
+          "url": "https://mcp.useclick.ai/mcp",
+          "status": 404,
+          "headers": {
+            "alt-svc": "h3=\":443\"; ma=86400",
+            "cache-control": "public, max-age=5",
+            "cf-cache-status": "DYNAMIC",
+            "cf-ray": "a3f79bbcbf36cb4a-IAD",
+            "content-encoding": "zstd",
+            "content-type": "application/json",
+            "date": "Wed, 23 Sep 2026 06:49:15 GMT",
+            "nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+            "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=aFAvscPZdxkAfyN2ScP6ZYZnzcWKnFVT%2BEkLcXOoEydMTMysSKOQhIM5eXMZ54m26cRwQ0VwS0Y2rdizmlfwjX1rvuh2tOU1UJ%2FM33jifRAJx1FJ%2B4DAijMXPzLj%2FVB29mU%3D\"}]}",
+            "server": "cloudflare",
+            "x-hikari-trace": "iad1.dh1s",
+            "x-railway-edge": "iad1",
+            "x-railway-fallback": "true",
+            "x-railway-request-id": "n6KqyXU-R-uBdSizjq4OvQ"
+          },
+          "body": {
+            "status": "error",
+            "code": 404,
+            "message": "Application not found",
+            "request_id": "n6KqyXU-R-uBdSizjq4OvQ"
+          }
+        },
+        {
+          "url": "https://mcp.useclick.ai/.well-known/oauth-protected-resource/mcp",
+          "status": 404,
+          "headers": {
+            "alt-svc": "h3=\":443\"; ma=86400",
+            "cache-control": "public, max-age=5",
+            "cf-cache-status": "DYNAMIC",
+            "cf-ray": "a3f79bc18d66cb4a-IAD",
+            "content-encoding": "zstd",
+            "content-type": "application/json",
+            "date": "Wed, 23 Sep 2026 06:49:15 GMT",
+            "nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+            "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=%2BpByJRaErM26FTXzpVqG3BfSZ3d9ld%2BHADgv%2FLv7zqS9HqT7%2B8bRqENzoy8pfh%2BIjkPHxdKDBKyeDOVnPRsaEyLdHRLd%2FSi6o8qULjoyNwr7YjCVhEBbyaXxt2g2xd82pRk%3D\"}]}",
+            "server": "cloudflare",
+            "x-hikari-trace": "iad1.dh1s",
+            "x-railway-edge": "iad1",
+            "x-railway-fallback": "true",
+            "x-railway-request-id": "r0svhiwAQiqCmQ8tpHNmDw"
+          },
+          "body": {
+            "status": "error",
+            "code": 404,
+            "message": "Application not found",
+            "request_id": "r0svhiwAQiqCmQ8tpHNmDw"
+          }
+        },
+        {
+          "url": "https://mcp.useclick.ai/.well-known/oauth-protected-resource",
+          "status": 404,
+          "headers": {
+            "alt-svc": "h3=\":443\"; ma=86400",
+            "cache-control": "public, max-age=5",
+            "cf-cache-status": "DYNAMIC",
+            "cf-ray": "a3f79bc21ec6cb4a-IAD",
+            "content-encoding": "zstd",
+            "content-type": "application/json",
+            "date": "Wed, 23 Sep 2026 06:49:15 GMT",
+            "nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+            "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=XGiKmmRFtDhSJOvF1bA7LsaoelgZqSzn6CQuqLYK605rtWBkhBoZQTl21b4DqoM8RT19IJ%2BvZTDshOss73w4ReSQdcXuuPXr5aZn0ry8m3ngWBxNpCgsY4smpvhLWaUEWzU%3D\"}]}",
+            "server": "cloudflare",
+            "x-hikari-trace": "iad1.dh1s",
+            "x-railway-edge": "iad1",
+            "x-railway-fallback": "true",
+            "x-railway-request-id": "rujdnUMrTKWxtDjT-_9nXA"
+          },
+          "body": {
+            "status": "error",
+            "code": 404,
+            "message": "Application not found",
+            "request_id": "rujdnUMrTKWxtDjT-_9nXA"
+          }
+        }
+      ]
+    },
+    "asMetadata": {
+      "expectedIssuer": "https://mcp.useclick.ai/",
+      "retrieved": false,
+      "issuerMismatch": false,
+      "clientIdMetadataDocumentSupported": false,
+      "registeredRedirectUris": [],
+      "endpointLiveness": [],
+      "candidates": [
+        "https://mcp.useclick.ai/.well-known/oauth-authorization-server",
+        "https://mcp.useclick.ai/.well-known/openid-configuration"
+      ],
+      "observations": [
+        {
+          "url": "https://mcp.useclick.ai/.well-known/oauth-authorization-server",
+          "status": 404,
+          "headers": {
+            "alt-svc": "h3=\":443\"; ma=86400",
+            "cache-control": "public, max-age=5",
+            "cf-cache-status": "DYNAMIC",
+            "cf-ray": "a3f79bc57911cb4a-IAD",
+            "content-encoding": "zstd",
+            "content-type": "application/json",
+            "date": "Wed, 23 Sep 2026 06:49:16 GMT",
+            "nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+            "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=c9d47Lz%2FnWu6hSlYvDv%2FKY9VL8igDxFDXSZuh02o%2B%2Ba0745AvpkzDcGph%2FmrQwBz%2Fh7gEFFreKL6u%2FQQxhje8aUlWdLOhCpAhiDN0PmXc2i5jPKXxUIzIRe3R6A7zruw8KE%3D\"}]}",
+            "server": "cloudflare",
+            "x-hikari-trace": "iad1.dh1s",
+            "x-railway-edge": "iad1",
+            "x-railway-fallback": "true",
+            "x-railway-request-id": "RF2Ym5pbT5yrOha7pHNmDw"
+          },
+          "body": {
+            "status": "error",
+            "code": 404,
+            "message": "Application not found",
+            "request_id": "RF2Ym5pbT5yrOha7pHNmDw"
+          }
+        },
+        {
+          "url": "https://mcp.useclick.ai/.well-known/openid-configuration",
+          "status": 404,
+          "headers": {
+            "alt-svc": "h3=\":443\"; ma=86400",
+            "cache-control": "public, max-age=5",
+            "cf-cache-status": "DYNAMIC",
+            "cf-ray": "a3f79bc5fa84cb4a-IAD",
+            "content-encoding": "zstd",
+            "content-type": "application/json",
+            "date": "Wed, 23 Sep 2026 06:49:16 GMT",
+            "nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+            "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=tH50DpxmXmTBvh7mk8cl0MKmOiPaO2F4sdSptPJhVFj5dxOX3aIjKdWnArNFAhatGdw6MBNEOMFwDg8seJruuXVHZMDnnHyqoNio768Bh4dvXndNH6zuZ1jh93lOCUkkTac%3D\"}]}",
+            "server": "cloudflare",
+            "x-hikari-trace": "iad1.dh1s",
+            "x-railway-edge": "iad1",
+            "x-railway-fallback": "true",
+            "x-railway-request-id": "3DFvD2XsS46-x5mz9I3ezw"
+          },
+          "body": {
+            "status": "error",
+            "code": 404,
+            "message": "Application not found",
+            "request_id": "3DFvD2XsS46-x5mz9I3ezw"
+          }
+        }
+      ]
+    },
+    "additionalAuthorizationServers": [],
+    "protocol": {
+      "acceptedVersions": [],
+      "attempts": [
+        {
+          "version": "2025-11-25",
+          "status": 404,
+          "accepted": false
+        },
+        {
+          "version": "2025-06-18",
+          "status": 404,
+          "accepted": false
+        },
+        {
+          "version": "2025-03-26",
+          "status": 404,
+          "accepted": false
+        },
+        {
+          "version": "2024-11-05",
+          "status": 404,
+          "accepted": false
+        },
+        {
+          "version": "2024-10-07",
+          "status": 404,
+          "accepted": false
+        },
+        {
+          "version": "2026-07-28",
+          "status": 404,
+          "accepted": false
+        }
+      ]
+    }
+  }
+}
