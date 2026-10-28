@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 2,
+  "scannerVersion": "0.10.0",
+  "target": "https://api.usetorus.com/mcp",
+  "scannedAt": "2026-10-28T06:49:14.896Z",
+  "grade": null,
+  "authorizationConfigured": false,
+  "inconclusive": "The endpoint did not respond (TypeError: fetch failed (Hostname/IP does not match certificate's altnames: Host: api.usetorus.com. is not in the cert's altnames: DNS:*.up.railway.app, DNS:up.railway.app)). Nothing could be checked.",
+  "findings": [],
+  "passedChecks": [],
+  "skippedChecks": [
+    "endpoint-unreachable"
+  ],
+  "capabilities": {
+    "authorizationServerMetadata": false,
+    "pkceS256": null,
+    "dynamicClientRegistration": null,
+    "clientIdMetadataDocuments": null,
+    "issuerResponseParameter": null,
+    "clientCredentialsGrant": null,
+    "jwtBearerGrant": null
+  },
+  "probe": {
+    "serverUrl": "https://api.usetorus.com/mcp",
+    "fetchedAt": "2026-10-28T06:49:14.896Z",
+    "challenge": {
+      "status": 0,
+      "hasResourceMetadata": false
+    },
+    "prm": {
+      "retrieved": false,
+      "foundAtSubpath": false,
+      "foundAtRoot": false,
+      "authorizationServers": [],
+      "scopesSupported": [],
+      "error": "TypeError: fetch failed (Hostname/IP does not match certificate's altnames: Host: api.usetorus.com. is not in the cert's altnames: DNS:*.up.railway.app, DNS:up.railway.app)",
+      "observations": [
+        {
+          "url": "https://api.usetorus.com/mcp",
+          "status": 0,
+          "headers": {},
+          "error": "fetch failed (ERR_TLS_CERT_ALTNAME_INVALID)"
+        }
+      ]
+    },
+    "asMetadata": {
+      "retrieved": false,
+      "registeredRedirectUris": [],
+      "endpointLiveness": [],
+      "candidates": [],
+      "observations": []
+    },
+    "additionalAuthorizationServers": [],
+    "protocol": {
+      "acceptedVersions": [],
+      "attempts": [
+        {
+          "version": "2025-11-25",
+          "accepted": false
+        },
+        {
+          "version": "2025-06-18",
+          "accepted": false
+        },
+        {
+          "version": "2025-03-26",
+          "accepted": false
+        },
+        {
+          "version": "2024-11-05",
+          "accepted": false
+        },
+        {
+          "version": "2024-10-07",
+          "accepted": false
+        },
+        {
+          "version": "2026-07-28",
+          "accepted": false
+        }
+      ]
+    }
+  }
+}
