@@ -2,181 +2,600 @@
   "schemaVersion": 2,
   "scannerVersion": "0.10.0",
   "target": "https://mcp.useclick.ai/mcp",
-  "scannedAt": "2026-09-23T06:49:16.558Z",
-  "grade": null,
-  "authorizationConfigured": false,
-  "inconclusive": "The endpoint answered but never demanded authorization and did not serve the probed MCP operation, so there is no authorization surface at this URL to audit.",
-  "findings": [],
-  "passedChecks": [],
-  "skippedChecks": [
-    "endpoint-not-a-protected-resource"
+  "scannedAt": "2026-11-06T06:49:16.491Z",
+  "grade": "A",
+  "authorizationConfigured": true,
+  "findings": [
+    {
+      "id": "client-compatibility.issuer-response",
+      "family": "client_compatibility",
+      "normative": "SHOULD",
+      "severity": "medium",
+      "title": "Authorization-response issuer binding is not advertised",
+      "message": "The authorization server does not advertise authorization_response_iss_parameter_supported, reducing protection against authorization-server mix-up during callback. This advisory is a dated forecast, in the specification's own words: \"A future revision of this specification is expected to upgrade authorization server inclusion of iss from SHOULD to MUST.\" When that revision ships, this finding becomes a requirement violation.",
+      "evidence": [
+        "https://wonderful-novel-08.authkit.app/.well-known/oauth-authorization-server"
+      ],
+      "specReferences": [
+        {
+          "id": "RFC-9207-iss-parameter",
+          "url": "https://www.rfc-editor.org/rfc/rfc9207.html#section-2"
+        }
+      ],
+      "probeTier": "passive",
+      "fix": "Enable RFC 9207 and advertise authorization_response_iss_parameter_supported: true."
+    },
+    {
+      "id": "token-trust.rejected-credential-error-code",
+      "family": "token_trust",
+      "normative": "SHOULD",
+      "severity": "low",
+      "title": "The 401 for a rejected credential names no error code",
+      "message": "The server refused an invalid bearer token with 401 and the challenge \"Bearer resource_metadata=\\\"https://mcp.useclick.ai/.well-known/oauth-protected-resource/mcp\\\", scope=\\\"openid\\\"\", which carries no error attribute. OAuth 2.1 §5.3.1 says a resource server SHOULD include error (invalid_token, per §5.3.2) when the request presented a token that failed — the client then knows the credential was declined rather than merely missing. No reference client currently reads this on a 401, so nothing breaks today; it is the recommendation, reported as such.",
+      "evidence": [
+        "https://mcp.useclick.ai/mcp — initialize with an invalid bearer token: HTTP 401",
+        "same request without a credential: HTTP 401"
+      ],
+      "specReferences": [
+        {
+          "id": "OAuth-2.1-resource-error-response",
+          "url": "https://datatracker.ietf.org/doc/html/draft-ietf-oauth-v2-1-13#section-5.3.1"
+        },
+        {
+          "id": "MCP-Token-handling",
+          "url": "https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization#token-handling"
+        }
+      ],
+      "probeTier": "passive",
+      "fix": "Add error=\"invalid_token\" to the WWW-Authenticate challenge on a 401 that rejects a presented token; leave it off the 401 for a request that carried none."
+    }
   ],
+  "passedChecks": [
+    "discovery.protected-resource-metadata",
+    "discovery.challenge-metadata-pointer",
+    "discovery.authorization-servers",
+    "discovery.resource-identifier",
+    "discovery.issuer-identity",
+    "discovery.authorization-server-metadata",
+    "token-trust.endpoints-answer",
+    "client-compatibility.pkce-s256",
+    "client-compatibility.client-registration",
+    "client-compatibility.dcr-deprecated",
+    "client-compatibility.token-auth-method-interop",
+    "client-compatibility.authorization-endpoint-query",
+    "client-compatibility.issuer-path-refresh",
+    "client-compatibility.issuer-trailing-slash",
+    "client-compatibility.dpop-required",
+    "authorization.forbidden-without-credentials",
+    "client-compatibility.step-up-challenge",
+    "client-compatibility.dcr-durability",
+    "token-trust.endpoint-https",
+    "client-compatibility.public-client-auth",
+    "token-trust.endpoint-unroutable-host",
+    "client-compatibility.pkce-plain-offered",
+    "client-compatibility.response-type-code",
+    "discovery.issuer-format",
+    "token-trust.resource-https",
+    "token-trust.bearer-methods-query",
+    "discovery.metadata-content-type",
+    "token-trust.scope-minimization",
+    "token-trust.offline-access",
+    "token-trust.invalid-token-rejection",
+    "discovery.challenge-on-rejected-credential",
+    "token-trust.rejected-credential-challenge",
+    "discovery.challenge-parameter-quoting"
+  ],
+  "skippedChecks": [
+    "discovery.additional-authorization-servers",
+    "client-compatibility.protocol-versions",
+    "token-trust.unauthenticated-operation",
+    "discovery.challenge-cors-exposure"
+  ],
+  "summary": {
+    "checked": 35,
+    "violated": 0,
+    "notRun": 4
+  },
   "capabilities": {
-    "authorizationServerMetadata": false,
-    "pkceS256": null,
-    "dynamicClientRegistration": null,
-    "clientIdMetadataDocuments": null,
-    "issuerResponseParameter": null,
-    "clientCredentialsGrant": null,
-    "jwtBearerGrant": null
+    "authorizationServerMetadata": true,
+    "pkceS256": true,
+    "dynamicClientRegistration": true,
+    "clientIdMetadataDocuments": true,
+    "issuerResponseParameter": false,
+    "clientCredentialsGrant": false,
+    "jwtBearerGrant": false
   },
   "probe": {
     "serverUrl": "https://mcp.useclick.ai/mcp",
-    "fetchedAt": "2026-09-23T06:49:16.558Z",
+    "fetchedAt": "2026-11-06T06:49:16.491Z",
     "challenge": {
-      "status": 404,
-      "hasResourceMetadata": false
+      "status": 401,
+      "header": "Bearer resource_metadata=\"https://mcp.useclick.ai/.well-known/oauth-protected-resource/mcp\", scope=\"openid\"",
+      "cors": {
+        "origin": "https://mcpcomp-probe.invalid",
+        "status": 403,
+        "allowOrigin": "*",
+        "exposeHeaders": [
+          "*"
+        ]
+      },
+      "scope": "openid",
+      "hasResourceMetadata": true,
+      "resourceMetadataUrl": "https://mcp.useclick.ai/.well-known/oauth-protected-resource/mcp"
     },
     "prm": {
-      "retrieved": false,
-      "foundAtSubpath": false,
+      "url": "https://mcp.useclick.ai/.well-known/oauth-protected-resource/mcp",
+      "retrieved": true,
+      "foundAtSubpath": true,
       "foundAtRoot": false,
-      "authorizationServers": [],
-      "scopesSupported": [],
-      "error": "Error: Resource server does not implement OAuth 2.0 Protected Resource Metadata.",
+      "resource": "https://mcp.useclick.ai/mcp",
+      "authorizationServers": [
+        "https://wonderful-novel-08.authkit.app"
+      ],
+      "scopesSupported": [
+        "openid"
+      ],
+      "raw": {
+        "resource": "https://mcp.useclick.ai/mcp",
+        "authorization_servers": [
+          "https://wonderful-novel-08.authkit.app"
+        ],
+        "scopes_supported": [
+          "openid"
+        ],
+        "bearer_methods_supported": [
+          "header"
+        ],
+        "_original_resource": "https://mcp.useclick.ai/mcp"
+      },
       "observations": [
         {
           "url": "https://mcp.useclick.ai/mcp",
-          "status": 404,
+          "status": 401,
           "headers": {
-            "alt-svc": "h3=\":443\"; ma=86400",
-            "cache-control": "public, max-age=5",
+            "access-control-allow-origin": "*",
+            "access-control-expose-headers": "*",
+            "cache-control": "no-store",
             "cf-cache-status": "DYNAMIC",
-            "cf-ray": "a3f79bbcbf36cb4a-IAD",
-            "content-encoding": "zstd",
+            "cf-ray": "a562283d4a2cf304-IAD",
             "content-type": "application/json",
-            "date": "Wed, 23 Sep 2026 06:49:15 GMT",
-            "nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
-            "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=aFAvscPZdxkAfyN2ScP6ZYZnzcWKnFVT%2BEkLcXOoEydMTMysSKOQhIM5eXMZ54m26cRwQ0VwS0Y2rdizmlfwjX1rvuh2tOU1UJ%2FM33jifRAJx1FJ%2B4DAijMXPzLj%2FVB29mU%3D\"}]}",
+            "date": "Fri, 06 Nov 2026 06:49:15 GMT",
             "server": "cloudflare",
-            "x-hikari-trace": "iad1.dh1s",
-            "x-railway-edge": "iad1",
-            "x-railway-fallback": "true",
-            "x-railway-request-id": "n6KqyXU-R-uBdSizjq4OvQ"
+            "vary": "accept-encoding",
+            "www-authenticate": "Bearer resource_metadata=\"https://mcp.useclick.ai/.well-known/oauth-protected-resource/mcp\", scope=\"openid\""
           },
           "body": {
-            "status": "error",
-            "code": 404,
-            "message": "Application not found",
-            "request_id": "n6KqyXU-R-uBdSizjq4OvQ"
+            "error": {
+              "code": "unauthorized",
+              "message": "A valid Click API key or MCP OAuth access token is required."
+            }
           }
         },
         {
           "url": "https://mcp.useclick.ai/.well-known/oauth-protected-resource/mcp",
-          "status": 404,
+          "status": 200,
           "headers": {
-            "alt-svc": "h3=\":443\"; ma=86400",
-            "cache-control": "public, max-age=5",
+            "access-control-allow-origin": "*",
+            "access-control-expose-headers": "*",
+            "cache-control": "no-store",
             "cf-cache-status": "DYNAMIC",
-            "cf-ray": "a3f79bc18d66cb4a-IAD",
-            "content-encoding": "zstd",
+            "cf-ray": "a56228425899f304-IAD",
+            "content-encoding": "gzip",
             "content-type": "application/json",
-            "date": "Wed, 23 Sep 2026 06:49:15 GMT",
-            "nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
-            "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=%2BpByJRaErM26FTXzpVqG3BfSZ3d9ld%2BHADgv%2FLv7zqS9HqT7%2B8bRqENzoy8pfh%2BIjkPHxdKDBKyeDOVnPRsaEyLdHRLd%2FSi6o8qULjoyNwr7YjCVhEBbyaXxt2g2xd82pRk%3D\"}]}",
+            "date": "Fri, 06 Nov 2026 06:49:15 GMT",
             "server": "cloudflare",
-            "x-hikari-trace": "iad1.dh1s",
-            "x-railway-edge": "iad1",
-            "x-railway-fallback": "true",
-            "x-railway-request-id": "r0svhiwAQiqCmQ8tpHNmDw"
+            "vary": "accept-encoding"
           },
           "body": {
-            "status": "error",
-            "code": 404,
-            "message": "Application not found",
-            "request_id": "r0svhiwAQiqCmQ8tpHNmDw"
-          }
-        },
-        {
-          "url": "https://mcp.useclick.ai/.well-known/oauth-protected-resource",
-          "status": 404,
-          "headers": {
-            "alt-svc": "h3=\":443\"; ma=86400",
-            "cache-control": "public, max-age=5",
-            "cf-cache-status": "DYNAMIC",
-            "cf-ray": "a3f79bc21ec6cb4a-IAD",
-            "content-encoding": "zstd",
-            "content-type": "application/json",
-            "date": "Wed, 23 Sep 2026 06:49:15 GMT",
-            "nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
-            "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=XGiKmmRFtDhSJOvF1bA7LsaoelgZqSzn6CQuqLYK605rtWBkhBoZQTl21b4DqoM8RT19IJ%2BvZTDshOss73w4ReSQdcXuuPXr5aZn0ry8m3ngWBxNpCgsY4smpvhLWaUEWzU%3D\"}]}",
-            "server": "cloudflare",
-            "x-hikari-trace": "iad1.dh1s",
-            "x-railway-edge": "iad1",
-            "x-railway-fallback": "true",
-            "x-railway-request-id": "rujdnUMrTKWxtDjT-_9nXA"
-          },
-          "body": {
-            "status": "error",
-            "code": 404,
-            "message": "Application not found",
-            "request_id": "rujdnUMrTKWxtDjT-_9nXA"
+            "resource": "https://mcp.useclick.ai/mcp",
+            "authorization_servers": [
+              "https://wonderful-novel-08.authkit.app"
+            ],
+            "scopes_supported": [
+              "openid"
+            ],
+            "bearer_methods_supported": [
+              "header"
+            ],
+            "_original_resource": "https://mcp.useclick.ai/mcp"
           }
         }
       ]
     },
     "asMetadata": {
-      "expectedIssuer": "https://mcp.useclick.ai/",
-      "retrieved": false,
+      "expectedIssuer": "https://wonderful-novel-08.authkit.app",
+      "retrieved": true,
       "issuerMismatch": false,
-      "clientIdMetadataDocumentSupported": false,
+      "issuer": "https://wonderful-novel-08.authkit.app",
+      "authorizationEndpoint": "https://wonderful-novel-08.authkit.app/oauth2/authorize",
+      "tokenEndpoint": "https://wonderful-novel-08.authkit.app/oauth2/token",
+      "registrationEndpoint": "https://wonderful-novel-08.authkit.app/oauth2/register",
+      "codeChallengeMethodsSupported": [
+        "S256"
+      ],
+      "grantTypesSupported": [
+        "authorization_code",
+        "refresh_token",
+        "urn:ietf:params:oauth:grant-type:device_code",
+        "urn:ietf:params:oauth:grant-type:token-exchange"
+      ],
+      "tokenEndpointAuthMethodsSupported": [
+        "none",
+        "client_secret_post",
+        "client_secret_basic"
+      ],
+      "scopesSupported": [
+        "email",
+        "offline_access",
+        "openid",
+        "profile"
+      ],
+      "clientIdMetadataDocumentSupported": true,
       "registeredRedirectUris": [],
-      "endpointLiveness": [],
+      "endpointLiveness": [
+        {
+          "url": "https://wonderful-novel-08.authkit.app/oauth2/authorize?client_id=mcpcomp-probe-unregistered&response_type=code&redirect_uri=https%3A%2F%2Fmcpcomp.invalid%2Fprobe&code_challenge=E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM&code_challenge_method=S256",
+          "status": 302,
+          "headers": {
+            "access-control-allow-credentials": "true",
+            "cf-cache-status": "DYNAMIC",
+            "cf-ray": "a56228436f9cc5c6-IAD",
+            "content-security-policy": "frame-ancestors https://bolt.new https://lovable.dev https://replit.com https://riff.new https://v0.app",
+            "content-security-policy-report-only": "default-src 'self'; script-src 'self' 'nonce-XfP0X+qSmL2Jf0pYR11yWw==' 'unsafe-inline' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' *; img-src * data:; font-src * data:; connect-src *; frame-src 'self' https://challenges.cloudflare.com; frame-ancestors https://bolt.new https://lovable.dev https://replit.com https://riff.new https://v0.app; upgrade-insecure-requests; worker-src 'self'; report-uri https://browser-intake-datadoghq.com/api/v2/logs?dd-api-key=pubb28ba93eb59013963476c6dd6c190040&dd-evp-origin=content-security-policy&ddsource=csp-report; report-to csp-datadog",
+            "date": "Fri, 06 Nov 2026 06:49:16 GMT",
+            "expect-ct": "max-age=0",
+            "location": "https://wonderful-novel-08.authkit.app/oauth2/error?error=application_not_found",
+            "referrer-policy": "no-referrer-when-downgrade",
+            "reporting-endpoints": "csp-datadog=\"https://browser-intake-datadoghq.com/api/v2/logs?dd-api-key=pubb28ba93eb59013963476c6dd6c190040&dd-evp-origin=content-security-policy&ddsource=csp-report\"",
+            "server": "cloudflare",
+            "set-cookie": "[redacted]",
+            "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+            "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch,Origin, Accept",
+            "x-content-type-options": "nosniff",
+            "x-dns-prefetch-control": "off",
+            "x-download-options": "noopen",
+            "x-envoy-upstream-service-time": "36",
+            "x-frame-options": "SAMEORIGIN",
+            "x-nonce": "XfP0X+qSmL2Jf0pYR11yWw==",
+            "x-permitted-cross-domain-policies": "none",
+            "x-ratelimit-limit": "1000, 24000;w=60, 1000;w=1",
+            "x-ratelimit-remaining": "998",
+            "x-ratelimit-reset": "1",
+            "x-request-id": "bf9ffa7b-ba0c-4f8d-914a-a8c8a00ae0e6",
+            "x-workos-app": "authkit",
+            "x-xss-protection": "0"
+          },
+          "body": "",
+          "metadataField": "authorization_endpoint"
+        },
+        {
+          "url": "https://wonderful-novel-08.authkit.app/oauth2/token",
+          "status": 404,
+          "headers": {
+            "access-control-allow-credentials": "true",
+            "cf-cache-status": "DYNAMIC",
+            "cf-ray": "a5622843cfd9c5c6-IAD",
+            "content-encoding": "gzip",
+            "content-security-policy": "frame-ancestors https://bolt.new https://lovable.dev https://replit.com https://riff.new https://v0.app",
+            "content-security-policy-report-only": "default-src 'self'; script-src 'self' 'nonce-FyyCWJkzqUojqNqccVctJQ==' 'unsafe-inline' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' *; img-src * data:; font-src * data:; connect-src *; frame-src 'self' https://challenges.cloudflare.com; frame-ancestors https://bolt.new https://lovable.dev https://replit.com https://riff.new https://v0.app; upgrade-insecure-requests; worker-src 'self'; report-uri https://browser-intake-datadoghq.com/api/v2/logs?dd-api-key=pubb28ba93eb59013963476c6dd6c190040&dd-evp-origin=content-security-policy&ddsource=csp-report; report-to csp-datadog",
+            "content-type": "application/json; charset=utf-8",
+            "date": "Fri, 06 Nov 2026 06:49:16 GMT",
+            "etag": "W/\"46-Xmp0JJH9HvgA0pfe9mtavWSdM7Y\"",
+            "expect-ct": "max-age=0",
+            "referrer-policy": "no-referrer-when-downgrade",
+            "reporting-endpoints": "csp-datadog=\"https://browser-intake-datadoghq.com/api/v2/logs?dd-api-key=pubb28ba93eb59013963476c6dd6c190040&dd-evp-origin=content-security-policy&ddsource=csp-report\"",
+            "server": "cloudflare",
+            "set-cookie": "[redacted]",
+            "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+            "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch,Origin, Accept-Encoding",
+            "x-content-type-options": "nosniff",
+            "x-dns-prefetch-control": "off",
+            "x-download-options": "noopen",
+            "x-envoy-upstream-service-time": "34",
+            "x-frame-options": "SAMEORIGIN",
+            "x-nonce": "FyyCWJkzqUojqNqccVctJQ==",
+            "x-permitted-cross-domain-policies": "none",
+            "x-ratelimit-limit": "1000, 24000;w=60, 1000;w=1",
+            "x-ratelimit-remaining": "997",
+            "x-ratelimit-reset": "1",
+            "x-request-id": "38149b9b-20fe-48e4-8a78-ade88e15f823",
+            "x-workos-app": "authkit",
+            "x-xss-protection": "0"
+          },
+          "body": {
+            "message": "The requested resource was not found",
+            "error": "Not Found"
+          },
+          "metadataField": "token_endpoint"
+        },
+        {
+          "url": "https://wonderful-novel-08.authkit.app/oauth2/register",
+          "status": 404,
+          "headers": {
+            "access-control-allow-credentials": "true",
+            "cf-cache-status": "DYNAMIC",
+            "cf-ray": "a56228443823c5c6-IAD",
+            "content-encoding": "gzip",
+            "content-security-policy": "frame-ancestors https://bolt.new https://lovable.dev https://replit.com https://riff.new https://v0.app",
+            "content-security-policy-report-only": "default-src 'self'; script-src 'self' 'nonce-9a1oH6QO2cPONAV3K0qmew==' 'unsafe-inline' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' *; img-src * data:; font-src * data:; connect-src *; frame-src 'self' https://challenges.cloudflare.com; frame-ancestors https://bolt.new https://lovable.dev https://replit.com https://riff.new https://v0.app; upgrade-insecure-requests; worker-src 'self'; report-uri https://browser-intake-datadoghq.com/api/v2/logs?dd-api-key=pubb28ba93eb59013963476c6dd6c190040&dd-evp-origin=content-security-policy&ddsource=csp-report; report-to csp-datadog",
+            "content-type": "application/json; charset=utf-8",
+            "date": "Fri, 06 Nov 2026 06:49:16 GMT",
+            "etag": "W/\"46-Xmp0JJH9HvgA0pfe9mtavWSdM7Y\"",
+            "expect-ct": "max-age=0",
+            "referrer-policy": "no-referrer-when-downgrade",
+            "reporting-endpoints": "csp-datadog=\"https://browser-intake-datadoghq.com/api/v2/logs?dd-api-key=pubb28ba93eb59013963476c6dd6c190040&dd-evp-origin=content-security-policy&ddsource=csp-report\"",
+            "server": "cloudflare",
+            "set-cookie": "[redacted]",
+            "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+            "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch,Origin, Accept-Encoding",
+            "x-content-type-options": "nosniff",
+            "x-dns-prefetch-control": "off",
+            "x-download-options": "noopen",
+            "x-envoy-upstream-service-time": "40",
+            "x-frame-options": "SAMEORIGIN",
+            "x-nonce": "9a1oH6QO2cPONAV3K0qmew==",
+            "x-permitted-cross-domain-policies": "none",
+            "x-ratelimit-limit": "1000, 24000;w=60, 1000;w=1",
+            "x-ratelimit-remaining": "996",
+            "x-ratelimit-reset": "1",
+            "x-request-id": "21bb9774-58f2-4025-aa5a-99f35edff493",
+            "x-workos-app": "authkit",
+            "x-xss-protection": "0"
+          },
+          "body": {
+            "message": "The requested resource was not found",
+            "error": "Not Found"
+          },
+          "metadataField": "registration_endpoint"
+        },
+        {
+          "url": "https://wonderful-novel-08.authkit.app/oauth2/jwks",
+          "status": 200,
+          "headers": {
+            "access-control-allow-credentials": "true",
+            "cache-control": "public, max-age=300",
+            "cf-cache-status": "EXPIRED",
+            "cf-ray": "a5622844b87fc5c6-IAD",
+            "content-encoding": "gzip",
+            "content-security-policy": "frame-ancestors https://bolt.new https://lovable.dev https://replit.com https://riff.new https://v0.app",
+            "content-security-policy-report-only": "default-src 'self'; script-src 'self' 'nonce-7CCFv/ivE2T/RoIpslgNgw==' 'unsafe-inline' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' *; img-src * data:; font-src * data:; connect-src *; frame-src 'self' https://challenges.cloudflare.com; frame-ancestors https://bolt.new https://lovable.dev https://replit.com https://riff.new https://v0.app; upgrade-insecure-requests; worker-src 'self'; report-uri https://browser-intake-datadoghq.com/api/v2/logs?dd-api-key=pubb28ba93eb59013963476c6dd6c190040&dd-evp-origin=content-security-policy&ddsource=csp-report; report-to csp-datadog",
+            "content-type": "application/json; charset=utf-8",
+            "date": "Fri, 06 Nov 2026 06:49:16 GMT",
+            "etag": "W/\"5c3-bHwetwEoXwBW3CWNRsN4y9yjreA\"",
+            "expect-ct": "max-age=0",
+            "expires": "Fri, 06 Nov 2026 06:54:16 GMT",
+            "referrer-policy": "no-referrer-when-downgrade",
+            "reporting-endpoints": "csp-datadog=\"https://browser-intake-datadoghq.com/api/v2/logs?dd-api-key=pubb28ba93eb59013963476c6dd6c190040&dd-evp-origin=content-security-policy&ddsource=csp-report\"",
+            "server": "cloudflare",
+            "set-cookie": "[redacted]",
+            "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+            "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch,Origin, Accept-Encoding",
+            "x-content-type-options": "nosniff",
+            "x-dns-prefetch-control": "off",
+            "x-download-options": "noopen",
+            "x-envoy-upstream-service-time": "45",
+            "x-frame-options": "SAMEORIGIN",
+            "x-nonce": "7CCFv/ivE2T/RoIpslgNgw==",
+            "x-permitted-cross-domain-policies": "none",
+            "x-ratelimit-limit": "1000, 24000;w=60, 1000;w=1",
+            "x-ratelimit-remaining": "995",
+            "x-ratelimit-reset": "1",
+            "x-request-id": "f0653e31-e737-42e5-8b2b-22d34bf6e15c",
+            "x-workos-app": "authkit",
+            "x-xss-protection": "0"
+          },
+          "body": {
+            "keys": [
+              {
+                "alg": "RS256",
+                "kty": "RSA",
+                "use": "sig",
+                "n": "tSV92BhTBAEkjpKqx5S0n9mXt0-W4xHw4xztFeH1hak9Ts-QUXPcmOkemzUeoaz9cJ0PFim09tNK4UzAg9h9s9lX6duAC3A770kcpndZ3eZxUUTWfRW9iH3gsmaTwOeyaQy94-a8vxjlrxHKBCQsEpYXr6RZb2B9-bd-0JRhK91FEDwK6KIQrXGgrP4oGe3JB1pYFz-uE7-D7mbyMw_zUqY0YtwJa63biLuhBnSLVOU3YXoFgx83oP5fzpYS72hDTB-CtxEAlErEoNwIrjdhfDQbvINxqV8tUobrVKfb-4hwDFaiXbgNTn-2iHrv4pzxr8OjdKEolpA4zHbkCXf-oQ",
+                "e": "AQAB",
+                "kid": "sso_oidc_key_pair_01M4S0Y3W6HGXREBFXW119V90N",
+                "x5c": [
+                  "MIICvjCCAaagAwIBAgISQAAAaEyDw9gltiF+bIqvkFuvMA0GCSqGSIb3DQEBBQUAMBoxGDAWBgNVBAMTD2F1dGgud29ya29zLmNvbTAeFw0yNjEwMTIyMTQwMTBaFw0zMTEwMTIyMTQwMTBaMBoxGDAWBgNVBAMTD2F1dGgud29ya29zLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALUlfdgYUwQBJI6SqseUtJ/Zl7dPluMR8OMc7RXh9YWpPU7PkFFz3JjpHps1HqGs/XCdDxYptPbTSuFMwIPYfbPZV+nbgAtwO+9JHKZ3Wd3mcVFE1n0VvYh94LJmk8DnsmkMvePmvL8Y5a8RygQkLBKWF6+kWW9gffm3ftCUYSvdRRA8CuiiEK1xoKz+KBntyQdaWBc/rhO/g+5m8jMP81KmNGLcCWut24i7oQZ0i1TlN2F6BYMfN6D+X86WEu9oQ0wfgrcRAJRKxKDcCK43YXw0G7yDcalfLVKG61Sn2/uIcAxWol24DU5/toh67+Kc8a/Do3ShKJaQOMx25Al3/qECAwEAATANBgkqhkiG9w0BAQUFAAOCAQEASgqgSJ3DmfWiD5MJ36efQiOBVIzDvGmOAIPq6axm8RWz/V0YDz1iNsLLZ3Jzo5H/0cqfV69RaZZL22jGNB+ise41dT6zJcxKFGuiKWnu70dYQbl6T4ojVYeLgW5sF68ArxhVlOhLObrcIyNGK9FU2nv8pULCH2mNcAl5sd/zIdAs0nx159zRojQOCMPx3vheE+yu4zD7rTj92P48qh7y3/BYoOX+ImBx5DK+MCT1hc7CCbmTA1WCwZaFPU1ePxwJaNN0MLk2Jil7NSw2tEf4sGBW5MHrheJWzJE4CN0vvDdwIvvhBEhn3LoQXiB/8RrheuLKeULcy/2gkK40mukmQg=="
+                ],
+                "x5t#S256": "tXO6lFkmxwjHT6j06Oda6c8nEbMjn1cSlymifuiyg8k"
+              }
+            ]
+          },
+          "metadataField": "jwks_uri"
+        },
+        {
+          "url": "https://wonderful-novel-08.authkit.app/oauth2/introspection",
+          "status": 404,
+          "headers": {
+            "access-control-allow-credentials": "true",
+            "cf-cache-status": "DYNAMIC",
+            "cf-ray": "a562284548fcc5c6-IAD",
+            "content-encoding": "gzip",
+            "content-security-policy": "frame-ancestors https://bolt.new https://lovable.dev https://replit.com https://riff.new https://v0.app",
+            "content-security-policy-report-only": "default-src 'self'; script-src 'self' 'nonce-8G2ptd9Qzxzr+RCn1xPTlg==' 'unsafe-inline' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' *; img-src * data:; font-src * data:; connect-src *; frame-src 'self' https://challenges.cloudflare.com; frame-ancestors https://bolt.new https://lovable.dev https://replit.com https://riff.new https://v0.app; upgrade-insecure-requests; worker-src 'self'; report-uri https://browser-intake-datadoghq.com/api/v2/logs?dd-api-key=pubb28ba93eb59013963476c6dd6c190040&dd-evp-origin=content-security-policy&ddsource=csp-report; report-to csp-datadog",
+            "content-type": "application/json; charset=utf-8",
+            "date": "Fri, 06 Nov 2026 06:49:16 GMT",
+            "etag": "W/\"46-Xmp0JJH9HvgA0pfe9mtavWSdM7Y\"",
+            "expect-ct": "max-age=0",
+            "referrer-policy": "no-referrer-when-downgrade",
+            "reporting-endpoints": "csp-datadog=\"https://browser-intake-datadoghq.com/api/v2/logs?dd-api-key=pubb28ba93eb59013963476c6dd6c190040&dd-evp-origin=content-security-policy&ddsource=csp-report\"",
+            "server": "cloudflare",
+            "set-cookie": "[redacted]",
+            "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+            "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch,Origin, Accept-Encoding",
+            "x-content-type-options": "nosniff",
+            "x-dns-prefetch-control": "off",
+            "x-download-options": "noopen",
+            "x-envoy-upstream-service-time": "41",
+            "x-frame-options": "SAMEORIGIN",
+            "x-nonce": "8G2ptd9Qzxzr+RCn1xPTlg==",
+            "x-permitted-cross-domain-policies": "none",
+            "x-ratelimit-limit": "1000, 24000;w=60, 1000;w=1",
+            "x-ratelimit-remaining": "994",
+            "x-ratelimit-reset": "1",
+            "x-request-id": "0b3f614c-e7af-4634-9b17-20ebe7d29566",
+            "x-workos-app": "authkit",
+            "x-xss-protection": "0"
+          },
+          "body": {
+            "message": "The requested resource was not found",
+            "error": "Not Found"
+          },
+          "metadataField": "introspection_endpoint"
+        },
+        {
+          "url": "https://wonderful-novel-08.authkit.app/oauth2/device_authorization",
+          "status": 404,
+          "headers": {
+            "access-control-allow-credentials": "true",
+            "cf-cache-status": "DYNAMIC",
+            "cf-ray": "a5622845b943c5c6-IAD",
+            "content-encoding": "gzip",
+            "content-security-policy": "frame-ancestors https://bolt.new https://lovable.dev https://replit.com https://riff.new https://v0.app",
+            "content-security-policy-report-only": "default-src 'self'; script-src 'self' 'nonce-7ChkJpfpb8vyUlWmtf2+aw==' 'unsafe-inline' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' *; img-src * data:; font-src * data:; connect-src *; frame-src 'self' https://challenges.cloudflare.com; frame-ancestors https://bolt.new https://lovable.dev https://replit.com https://riff.new https://v0.app; upgrade-insecure-requests; worker-src 'self'; report-uri https://browser-intake-datadoghq.com/api/v2/logs?dd-api-key=pubb28ba93eb59013963476c6dd6c190040&dd-evp-origin=content-security-policy&ddsource=csp-report; report-to csp-datadog",
+            "content-type": "application/json; charset=utf-8",
+            "date": "Fri, 06 Nov 2026 06:49:16 GMT",
+            "etag": "W/\"46-Xmp0JJH9HvgA0pfe9mtavWSdM7Y\"",
+            "expect-ct": "max-age=0",
+            "referrer-policy": "no-referrer-when-downgrade",
+            "reporting-endpoints": "csp-datadog=\"https://browser-intake-datadoghq.com/api/v2/logs?dd-api-key=pubb28ba93eb59013963476c6dd6c190040&dd-evp-origin=content-security-policy&ddsource=csp-report\"",
+            "server": "cloudflare",
+            "set-cookie": "[redacted]",
+            "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+            "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch,Origin, Accept-Encoding",
+            "x-content-type-options": "nosniff",
+            "x-dns-prefetch-control": "off",
+            "x-download-options": "noopen",
+            "x-envoy-upstream-service-time": "38",
+            "x-frame-options": "SAMEORIGIN",
+            "x-nonce": "7ChkJpfpb8vyUlWmtf2+aw==",
+            "x-permitted-cross-domain-policies": "none",
+            "x-ratelimit-limit": "1000, 24000;w=60, 1000;w=1",
+            "x-ratelimit-remaining": "993",
+            "x-ratelimit-reset": "1",
+            "x-request-id": "925c53d8-e3df-4f9e-a487-6c1976a05cbf",
+            "x-workos-app": "authkit",
+            "x-xss-protection": "0"
+          },
+          "body": {
+            "message": "The requested resource was not found",
+            "error": "Not Found"
+          },
+          "metadataField": "device_authorization_endpoint"
+        }
+      ],
+      "url": "https://wonderful-novel-08.authkit.app/.well-known/oauth-authorization-server",
+      "raw": {
+        "issuer": "https://wonderful-novel-08.authkit.app",
+        "authorization_endpoint": "https://wonderful-novel-08.authkit.app/oauth2/authorize",
+        "token_endpoint": "https://wonderful-novel-08.authkit.app/oauth2/token",
+        "registration_endpoint": "https://wonderful-novel-08.authkit.app/oauth2/register",
+        "scopes_supported": [
+          "email",
+          "offline_access",
+          "openid",
+          "profile"
+        ],
+        "response_types_supported": [
+          "code"
+        ],
+        "response_modes_supported": [
+          "query"
+        ],
+        "grant_types_supported": [
+          "authorization_code",
+          "refresh_token",
+          "urn:ietf:params:oauth:grant-type:device_code",
+          "urn:ietf:params:oauth:grant-type:token-exchange"
+        ],
+        "token_endpoint_auth_methods_supported": [
+          "none",
+          "client_secret_post",
+          "client_secret_basic"
+        ],
+        "introspection_endpoint": "https://wonderful-novel-08.authkit.app/oauth2/introspection",
+        "code_challenge_methods_supported": [
+          "S256"
+        ],
+        "client_id_metadata_document_supported": true,
+        "device_authorization_endpoint": "https://wonderful-novel-08.authkit.app/oauth2/device_authorization",
+        "jwks_uri": "https://wonderful-novel-08.authkit.app/oauth2/jwks"
+      },
       "candidates": [
-        "https://mcp.useclick.ai/.well-known/oauth-authorization-server",
-        "https://mcp.useclick.ai/.well-known/openid-configuration"
+        "https://wonderful-novel-08.authkit.app/.well-known/oauth-authorization-server",
+        "https://wonderful-novel-08.authkit.app/.well-known/openid-configuration"
       ],
       "observations": [
         {
-          "url": "https://mcp.useclick.ai/.well-known/oauth-authorization-server",
-          "status": 404,
+          "url": "https://wonderful-novel-08.authkit.app/.well-known/oauth-authorization-server",
+          "status": 200,
           "headers": {
-            "alt-svc": "h3=\":443\"; ma=86400",
-            "cache-control": "public, max-age=5",
-            "cf-cache-status": "DYNAMIC",
-            "cf-ray": "a3f79bc57911cb4a-IAD",
-            "content-encoding": "zstd",
-            "content-type": "application/json",
-            "date": "Wed, 23 Sep 2026 06:49:16 GMT",
-            "nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
-            "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=c9d47Lz%2FnWu6hSlYvDv%2FKY9VL8igDxFDXSZuh02o%2B%2Ba0745AvpkzDcGph%2FmrQwBz%2Fh7gEFFreKL6u%2FQQxhje8aUlWdLOhCpAhiDN0PmXc2i5jPKXxUIzIRe3R6A7zruw8KE%3D\"}]}",
+            "access-control-allow-credentials": "true",
+            "cache-control": "public, max-age=300",
+            "cf-cache-status": "EXPIRED",
+            "cf-ray": "a5622842befec5c6-IAD",
+            "content-encoding": "gzip",
+            "content-security-policy": "frame-ancestors https://bolt.new https://lovable.dev https://replit.com https://riff.new https://v0.app",
+            "content-security-policy-report-only": "default-src 'self'; script-src 'self' 'nonce-ddNXsW6lFAjpzNqkYqWmEg==' 'unsafe-inline' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' *; img-src * data:; font-src * data:; connect-src *; frame-src 'self' https://challenges.cloudflare.com; frame-ancestors https://bolt.new https://lovable.dev https://replit.com https://riff.new https://v0.app; upgrade-insecure-requests; worker-src 'self'; report-uri https://browser-intake-datadoghq.com/api/v2/logs?dd-api-key=pubb28ba93eb59013963476c6dd6c190040&dd-evp-origin=content-security-policy&ddsource=csp-report; report-to csp-datadog",
+            "content-type": "application/json; charset=utf-8",
+            "date": "Fri, 06 Nov 2026 06:49:16 GMT",
+            "etag": "W/\"3f9-0v5DSklgkTe57I77p0IHhOc/+U0\"",
+            "expect-ct": "max-age=0",
+            "expires": "Fri, 06 Nov 2026 06:54:16 GMT",
+            "referrer-policy": "no-referrer-when-downgrade",
+            "reporting-endpoints": "csp-datadog=\"https://browser-intake-datadoghq.com/api/v2/logs?dd-api-key=pubb28ba93eb59013963476c6dd6c190040&dd-evp-origin=content-security-policy&ddsource=csp-report\"",
             "server": "cloudflare",
-            "x-hikari-trace": "iad1.dh1s",
-            "x-railway-edge": "iad1",
-            "x-railway-fallback": "true",
-            "x-railway-request-id": "RF2Ym5pbT5yrOha7pHNmDw"
+            "set-cookie": "[redacted]",
+            "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+            "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch,Origin, Accept-Encoding",
+            "x-content-type-options": "nosniff",
+            "x-dns-prefetch-control": "off",
+            "x-download-options": "noopen",
+            "x-envoy-upstream-service-time": "53",
+            "x-frame-options": "SAMEORIGIN",
+            "x-nonce": "ddNXsW6lFAjpzNqkYqWmEg==",
+            "x-permitted-cross-domain-policies": "none",
+            "x-ratelimit-limit": "1000, 24000;w=60, 1000;w=1",
+            "x-ratelimit-remaining": "999",
+            "x-ratelimit-reset": "1",
+            "x-request-id": "6e0974aa-ad8c-4023-bf34-e16d53103aa2",
+            "x-workos-app": "authkit",
+            "x-xss-protection": "0"
           },
           "body": {
-            "status": "error",
-            "code": 404,
-            "message": "Application not found",
-            "request_id": "RF2Ym5pbT5yrOha7pHNmDw"
-          }
-        },
-        {
-          "url": "https://mcp.useclick.ai/.well-known/openid-configuration",
-          "status": 404,
-          "headers": {
-            "alt-svc": "h3=\":443\"; ma=86400",
-            "cache-control": "public, max-age=5",
-            "cf-cache-status": "DYNAMIC",
-            "cf-ray": "a3f79bc5fa84cb4a-IAD",
-            "content-encoding": "zstd",
-            "content-type": "application/json",
-            "date": "Wed, 23 Sep 2026 06:49:16 GMT",
-            "nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
-            "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=tH50DpxmXmTBvh7mk8cl0MKmOiPaO2F4sdSptPJhVFj5dxOX3aIjKdWnArNFAhatGdw6MBNEOMFwDg8seJruuXVHZMDnnHyqoNio768Bh4dvXndNH6zuZ1jh93lOCUkkTac%3D\"}]}",
-            "server": "cloudflare",
-            "x-hikari-trace": "iad1.dh1s",
-            "x-railway-edge": "iad1",
-            "x-railway-fallback": "true",
-            "x-railway-request-id": "3DFvD2XsS46-x5mz9I3ezw"
-          },
-          "body": {
-            "status": "error",
-            "code": 404,
-            "message": "Application not found",
-            "request_id": "3DFvD2XsS46-x5mz9I3ezw"
+            "authorization_endpoint": "https://wonderful-novel-08.authkit.app/oauth2/authorize",
+            "client_id_metadata_document_supported": true,
+            "code_challenge_methods_supported": [
+              "S256"
+            ],
+            "device_authorization_endpoint": "https://wonderful-novel-08.authkit.app/oauth2/device_authorization",
+            "grant_types_supported": [
+              "authorization_code",
+              "refresh_token",
+              "urn:ietf:params:oauth:grant-type:device_code",
+              "urn:ietf:params:oauth:grant-type:token-exchange"
+            ],
+            "introspection_endpoint": "https://wonderful-novel-08.authkit.app/oauth2/introspection",
+            "issuer": "https://wonderful-novel-08.authkit.app",
+            "jwks_uri": "https://wonderful-novel-08.authkit.app/oauth2/jwks",
+            "registration_endpoint": "https://wonderful-novel-08.authkit.app/oauth2/register",
+            "scopes_supported": [
+              "email",
+              "offline_access",
+              "openid",
+              "profile"
+            ],
+            "response_modes_supported": [
+              "query"
+            ],
+            "response_types_supported": [
+              "code"
+            ],
+            "token_endpoint": "https://wonderful-novel-08.authkit.app/oauth2/token",
+            "token_endpoint_auth_methods_supported": [
+              "none",
+              "client_secret_post",
+              "client_secret_basic"
+            ]
           }
         }
       ]
@@ -184,35 +603,42 @@
     "additionalAuthorizationServers": [],
     "protocol": {
       "acceptedVersions": [],
+      "rejectedCredential": {
+        "status": 401,
+        "servedResult": false,
+        "challenge": "Bearer resource_metadata=\"https://mcp.useclick.ai/.well-known/oauth-protected-resource/mcp\", scope=\"openid\"",
+        "baselineChallenge": "Bearer resource_metadata=\"https://mcp.useclick.ai/.well-known/oauth-protected-resource/mcp\", scope=\"openid\""
+      },
+      "challenge": "Bearer resource_metadata=\"https://mcp.useclick.ai/.well-known/oauth-protected-resource/mcp\", scope=\"openid\"",
       "attempts": [
         {
           "version": "2025-11-25",
-          "status": 404,
+          "status": 401,
           "accepted": false
         },
         {
           "version": "2025-06-18",
-          "status": 404,
+          "status": 401,
           "accepted": false
         },
         {
           "version": "2025-03-26",
-          "status": 404,
+          "status": 401,
           "accepted": false
         },
         {
           "version": "2024-11-05",
-          "status": 404,
+          "status": 401,
           "accepted": false
         },
         {
           "version": "2024-10-07",
-          "status": 404,
+          "status": 401,
           "accepted": false
         },
         {
           "version": "2026-07-28",
-          "status": 404,
+          "status": 401,
           "accepted": false
         }
       ]
